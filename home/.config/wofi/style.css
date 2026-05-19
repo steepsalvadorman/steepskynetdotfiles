@@ -1,0 +1,84 @@
+@import "../../.cache/wal/colors-waybar.css";
+
+/* ── Wofi Glassmorphic Neon Style ────────────────────────── */
+
+window {
+    margin: 0px;
+    border: 2px solid @color1; /* Borde Neon Dinámico extraído del wallpaper */
+    border-radius: 12px;
+    background-color: rgba(17, 17, 27, 0.8); /* Fondo oscuro translúcido */
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
+    font-size: 13px;
+}
+
+#outer-box {
+    margin: 10px;
+    border: none;
+    background-color: transparent;
+}
+
+#input {
+    margin: 5px;
+    border: 1px solid @color8;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: rgba(30, 30, 46, 0.6);
+    color: #cdd6f4;
+    font-weight: bold;
+    caret-color: @color1;
+}
+
+#input:focus {
+    border-color: @color1;
+    box-shadow: 0 0 8px @color1;
+}
+
+#scroll {
+    margin: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+#inner-box {
+    margin: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+#entry {
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #cdd6f4;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+#entry:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#entry:selected {
+    background-color: @color1;
+    border: 1px solid @color2;
+    color: #ffffff;
+}
+
+#text {
+    background-color: transparent;
+    color: inherit;
+}
+
+#text:selected {
+    background-color: transparent;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#img {
+    margin-right: 12px;
+    background-color: transparent;
+}
+
+#img:selected {
+    background-color: transparent;
+}

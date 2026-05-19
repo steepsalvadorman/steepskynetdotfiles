@@ -1,0 +1,251 @@
+@import url("/home/steepskynet/.cache/wal/waybar-colors.css");
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    border-radius: 5px;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+    margin: 4px 4px 0 4px;
+}
+
+.modules-center {
+    margin-top: 2px;
+}
+
+#workspaces,
+#clock,
+#pulseaudio,
+#network,
+#tray,
+#cpu,
+#memory,
+#temperature,
+#mpris,
+#cava,
+#custom-arch,
+#custom-brightness,
+#custom-guias {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 2px 12px;
+    margin: 0 1px;
+    color: rgba(255, 255, 255, 0.35);
+    transition: all 0.18s ease;
+}
+
+#workspaces {
+    padding: 2px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#workspaces button {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.3);
+    border-radius: 0;
+    padding: 2px 8px;
+    margin: 0;
+    font-size: 15px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.18s ease;
+}
+
+#workspaces button:hover,
+#workspaces button:active {
+    color: #00d2ff;
+    border-bottom: 1px solid #00d2ff;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+}
+
+#workspaces button.active {
+    color: #00d2ff;
+    border-bottom: 1px solid #00d2ff;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
+}
+
+#workspaces button.urgent {
+    color: #ff003c;
+    border-bottom: 1px solid #ff003c;
+    text-shadow: 0 0 8px rgba(255, 0, 60, 0.7);
+}
+
+#custom-arch {
+    color: #1793d1;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    border-right: none;
+    font-size: 24px;
+    padding: 0 18px 0 14px;
+    text-shadow:
+        0 0 6px rgba(23, 147, 209, 0.95),
+        0 0 14px rgba(23, 147, 209, 0.85),
+        0 0 28px rgba(23, 147, 209, 0.55);
+}
+
+#custom-arch:hover,
+#custom-arch:active {
+    background: transparent;
+    color: #39c5ff;
+    text-shadow:
+        0 0 8px rgba(57, 197, 255, 1),
+        0 0 18px rgba(57, 197, 255, 0.95),
+        0 0 36px rgba(57, 197, 255, 0.7);
+}
+
+#mpris {
+    color: #00ff66;
+    border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+    font-style: italic;
+}
+
+#mpris:hover, #mpris:active {
+    border-bottom-color: #00ff66;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.7);
+}
+
+#cava {
+    color: #ffb000;
+    border-bottom: 1px solid rgba(255, 176, 0, 0.2);
+    font-weight: bold;
+}
+
+#cava:hover, #cava:active {
+    border-bottom-color: #ffb000;
+    text-shadow: 0 0 10px rgba(255, 176, 0, 0.7);
+}
+
+#clock {
+    color: #d500ff;
+    border-bottom: 1px solid rgba(213, 0, 255, 0.5);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(213, 0, 255, 0.4);
+}
+
+#clock:hover, #clock:active {
+    border-bottom-color: #d500ff;
+    text-shadow: 0 0 10px rgba(213, 0, 255, 0.8);
+}
+
+#custom-brightness {
+    color: #ffea00;
+    border-bottom: 1px solid rgba(255, 234, 0, 0.2);
+}
+
+#custom-brightness:hover, #custom-brightness:active {
+    border-bottom-color: #ffea00;
+    text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
+}
+
+#cpu {
+    color: #ff6600;
+    border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+}
+
+#cpu:hover, #cpu:active {
+    border-bottom-color: #ff6600;
+    text-shadow: 0 0 8px rgba(255, 102, 0, 0.7);
+}
+
+#memory {
+    color: #ffea00;
+    border-bottom: 1px solid rgba(255, 234, 0, 0.2);
+}
+
+#memory:hover, #memory:active {
+    border-bottom-color: #ffea00;
+    text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
+}
+
+#temperature {
+    color: #00ff66;
+    border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+}
+
+#temperature:hover, #temperature:active {
+    border-bottom-color: #00ff66;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.7);
+}
+
+#temperature.critical {
+    color: #ff003c;
+    border-bottom-color: #ff003c;
+    text-shadow: 0 0 8px rgba(255, 0, 60, 0.8);
+    animation: blink 1s steps(1) infinite;
+}
+
+#pulseaudio {
+    color: #00e5ff;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+#pulseaudio:hover, #pulseaudio:active {
+    border-bottom-color: #00e5ff;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+}
+
+#pulseaudio.muted {
+    color: rgba(255, 255, 255, 0.2);
+    border-bottom-color: transparent;
+}
+
+#network {
+    color: #00e5ff;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+#network:hover, #network:active {
+    border-bottom-color: #00e5ff;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+}
+
+#network.disconnected {
+    color: #ff003c;
+    border-bottom-color: rgba(255, 0, 60, 0.5);
+    text-shadow: 0 0 8px rgba(255, 0, 60, 0.7);
+}
+
+#tray {
+    padding: 2px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+#custom-guias {
+    color: #aa00ff;
+    border-bottom: 1px solid rgba(170, 0, 255, 0.2);
+}
+
+#custom-guias:hover, #custom-guias:active {
+    border-bottom-color: #aa00ff;
+    text-shadow: 0 0 8px rgba(170, 0, 255, 0.7);
+}
+
+@keyframes blink {
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}

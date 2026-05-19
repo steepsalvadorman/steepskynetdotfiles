@@ -1,0 +1,4 @@
+tap "gentleman-programming/tap"
+brew "gcc"
+brew "gentleman-programming/tap/engram"
+npm "@openai/codex"

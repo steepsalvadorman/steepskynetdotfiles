@@ -1,0 +1,13 @@
+antigravity
+beautyline
+libcava
+libcava-debug
+pulseaudio-ctl
+sddm-astronaut-theme
+spotify
+waybar-cava
+waybar-cava-debug
+yay
+yay-debug
+zsh-theme-powerlevel10k-git
+zsh-theme-powerlevel10k-git-debug

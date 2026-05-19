@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyprland Lo-Fi Anime Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fuente premium Google Fonts Inter y Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- HEADER DEL PANEL -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <span class="arch-badge">󰣇 ARCH HYPR</span>
+                <h1 id="clock">00:00:00</h1>
+            </div>
+            <div class="header-right">
+                <button id="close-btn" class="control-btn close" title="Cerrar Panel">✕</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- COLUMNA IZQUIERDA: CONTROLES DE SISTEMA Y RECURSOS -->
+            <section class="panel-section system-controls">
+                <h2 class="section-title">📊 SISTEMA & MONITOREO</h2>
+                
+                <!-- Gráficos de Recursos -->
+                <div class="resource-gauges">
+                    <div class="gauge-card" id="cpu-card">
+                        <div class="gauge-ring">
+                            <svg viewBox="0 0 36 36">
+                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="ring-fill" id="cpu-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span class="gauge-value" id="cpu-val">0%</span>
+                        </div>
+                        <span class="gauge-label">CPU</span>
+                    </div>
+
+                    <div class="gauge-card" id="ram-card">
+                        <div class="gauge-ring">
+                            <svg viewBox="0 0 36 36">
+                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="ring-fill" id="ram-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span class="gauge-value" id="ram-val">0%</span>
+                        </div>
+                        <span class="gauge-label">RAM</span>
+                    </div>
+
+                    <div class="gauge-card" id="temp-card">
+                        <div class="gauge-ring">
+                            <svg viewBox="0 0 36 36">
+                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="ring-fill" id="temp-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span class="gauge-value" id="temp-val">0°C</span>
+                        </div>
+                        <span class="gauge-label">TEMP</span>
+                    </div>
+                </div>
+
+                <!-- Sliders Físicos -->
+                <div class="system-sliders">
+                    <div class="slider-group">
+                        <label>🔊 Volumen</label>
+                        <div class="slider-control">
+                            <button onclick="controlSys('volume/down')">🔉</button>
+                            <button onclick="controlSys('volume/mute')">🔇</button>
+                            <button onclick="controlSys('volume/up')">🔊</button>
+                        </div>
+                    </div>
+
+                    <div class="slider-group">
+                        <label>☀️ Brillo</label>
+                        <div class="slider-control">
+                            <button onclick="controlSys('brightness/down')">🔅</button>
+                            <button onclick="controlSys('brightness/up')">🔆</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallpaper Quick Changer -->
+                <button class="wallpaper-btn" onclick="controlSys('wallpaper/next')">🖼️ Siguiente Wallpaper (Wallhaven)</button>
+            </section>
+
+            <!-- COLUMNA CENTRAL/DERECHA: REPRODUCTOR LO-FI Y BUSCADOR ANIME -->
+            <section class="panel-section media-center">
+                
+                <!-- 🎵 REPRODUCTOR LO-FI CON GIF ANIMADO -->
+                <div class="lofi-player-box">
+                    <div class="lofi-screen">
+                        <img src="https://media.tenor.com/71239fH-y8wAAAAC/lofi-girl-lofi.gif" alt="Lo-Fi Girl Study" class="lofi-gif">
+                        <div class="lofi-overlay">
+                            <span class="now-playing-label">📻 Transmitiendo en Vivo</span>
+                            <h3 id="station-title">Lofi Girl Radio (Hip Hop)</h3>
+                        </div>
+                    </div>
+
+                    <div class="lofi-controls">
+                        <audio id="lofi-audio" src="https://stream.zeno.fm/0r0xa792kwzuv"></audio>
+                        <button id="play-pause-btn" class="play-btn">▶ REPRODUCIR</button>
+                        <select id="channel-select" class="theme-select">
+                            <option value="https://stream.zeno.fm/0r0xa792kwzuv">📻 Lofi Girl (Hip Hop)</option>
+                            <option value="https://stream.zeno.fm/46a8157776828">🌌 Synthwave Retro</option>
+                            <option value="https://stream.zeno.fm/75h49112kwzuv">🎷 Lofi Girl (Jazz-Hop)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 🍿 BUSCADOR DE ANIME INTELIGENTE -->
+                <div class="anime-search-box">
+                    <h2 class="section-title">🍿 BUSCADOR ANIME (Sin Anuncios)</h2>
+                    <div class="search-bar">
+                        <input type="text" id="anime-input" placeholder="Busca cualquier anime, ej. Chainsaw Man...">
+                        <button id="search-btn">🔍</button>
+                    </div>
+
+                    <!-- Lista horizontal de resultados -->
+                    <div class="anime-results" id="anime-results">
+                        <div class="search-placeholder">Escribe el nombre de un anime para comenzar...</div>
+                    </div>
+
+                    <!-- Detalles del Anime Seleccionado -->
+                    <div class="anime-details-card" id="anime-details">
+                        <img id="detail-img" src="" alt="Poster" class="detail-poster" style="display:none;">
+                        <div class="detail-info">
+                            <h3 id="detail-title"></h3>
+                            <p id="detail-synopsis"></p>
+                            <button id="play-anime-btn" class="play-anime-btn" style="display:none;">▶ VER CON MPV (Aceleración de Hardware)</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

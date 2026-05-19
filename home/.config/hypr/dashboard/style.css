@@ -1,0 +1,516 @@
+/* Importar colores dinámicos generados por pywal */
+@import url("file:///home/steepskynet/.cache/wal/colors.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color1) rgba(0, 0, 0, 0.2);
+}
+
+body {
+    background-color: transparent; /* Permite ver el desenfoque de Hyprland detrás de la ventana */
+    font-family: 'Inter', sans-serif;
+    color: #cdd6f4;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Scrollbar Personalizado */
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+*::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    background: var(--color1);
+    border-radius: 10px;
+}
+
+/* CONTENEDOR PRINCIPAL GLASSMORPHIC */
+.dashboard-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 24px;
+    background: rgba(15, 17, 28, 0.75); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 2px solid var(--color1);
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* HEADER DEL PANEL */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 16px;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.arch-badge {
+    color: var(--color4);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px var(--color4);
+}
+
+h1#clock {
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 10px var(--color1);
+}
+
+/* BOTÓN CERRAR */
+.control-btn.close {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.control-btn.close:hover {
+    background: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 15px var(--color1);
+    transform: rotate(90deg);
+}
+
+/* MAQUETACIÓN EN DOS COLUMNAS */
+.main-content {
+    display: flex;
+    flex: 1;
+    gap: 24px;
+    height: calc(100% - 90px);
+}
+
+/* SECCIONES BASE */
+.panel-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.system-controls {
+    width: 35%;
+    justify-content: space-between;
+}
+
+.media-center {
+    width: 65%;
+    overflow-y: auto;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--color2);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+/* ANILLOS DE RECURSOS */
+.resource-gauges {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.gauge-card {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 12px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.gauge-ring {
+    position: relative;
+    width: 65px;
+    height: 65px;
+}
+
+.gauge-ring svg {
+    width: 100%;
+    height: 100%;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 3;
+}
+
+.ring-fill {
+    fill: none;
+    stroke-linecap: round;
+    stroke-width: 3.2;
+    transition: stroke-dasharray 0.3s ease;
+}
+
+#cpu-fill { stroke: var(--color9); filter: drop-shadow(0 0 3px var(--color9)); }
+#ram-fill { stroke: var(--color11); filter: drop-shadow(0 0 3px var(--color11)); }
+#temp-fill { stroke: var(--color10); filter: drop-shadow(0 0 3px var(--color10)); }
+
+.gauge-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+}
+
+.gauge-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #a6adc8;
+}
+
+/* SLIDERS DE SISTEMA */
+.system-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.slider-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #a6adc8;
+}
+
+.slider-control {
+    display: flex;
+    gap: 8px;
+}
+
+.slider-control button {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 8px 0;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.slider-control button:hover {
+    background: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 10px var(--color1);
+}
+
+/* WALLPAPER BUTTON */
+.wallpaper-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color2);
+    border-radius: 8px;
+    padding: 12px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wallpaper-btn:hover {
+    background: var(--color2);
+    box-shadow: 0 0 15px var(--color2);
+}
+
+/* REPRODUCTOR LO-FI */
+.lofi-player-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lofi-screen {
+    position: relative;
+    height: 125px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.lofi-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+}
+
+.lofi-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 12px;
+}
+
+.now-playing-label {
+    color: var(--color1);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#station-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-top: 4px;
+}
+
+.lofi-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.play-btn {
+    background: var(--color1);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px var(--color1);
+}
+
+.play-btn:hover {
+    box-shadow: 0 0 20px var(--color1);
+    transform: scale(1.02);
+}
+
+.play-btn.playing {
+    background: var(--color10);
+    box-shadow: 0 0 10px var(--color10);
+}
+.play-btn.playing:hover {
+    box-shadow: 0 0 20px var(--color10);
+}
+
+.theme-select {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+    outline: none;
+}
+
+/* BUSCADOR ANIME */
+.anime-search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+}
+
+.search-bar {
+    display: flex;
+    gap: 8px;
+}
+
+.search-bar input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #ffffff;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.search-bar input:focus {
+    border-color: var(--color1);
+    box-shadow: 0 0 8px rgba(var(--color1), 0.3);
+}
+
+.search-bar button {
+    background: var(--color1);
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.search-bar button:hover {
+    box-shadow: 0 0 15px var(--color1);
+}
+
+/* LISTA HORIZONTAL ANIME */
+.anime-results {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    min-height: 140px;
+}
+
+.search-placeholder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: #6c7086;
+    font-style: italic;
+}
+
+.anime-card {
+    flex: 0 0 90px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.anime-card:hover {
+    transform: scale(1.05);
+}
+
+.anime-card img {
+    width: 100%;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.anime-card.selected img {
+    border-color: var(--color1);
+    box-shadow: 0 0 10px var(--color1);
+}
+
+.anime-card-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: #a6adc8;
+    text-align: center;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* DETALLE DEL ANIME SELECCIONADO */
+.anime-details-card {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    gap: 16px;
+    min-height: 130px;
+}
+
+.detail-poster {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    flex: 1;
+}
+
+#detail-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+#detail-synopsis {
+    font-size: 11px;
+    color: #a6adc8;
+    line-height: 1.4;
+    overflow-y: auto;
+    max-height: 50px;
+}
+
+.play-anime-btn {
+    background: var(--color2);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+}
+
+.play-anime-btn:hover {
+    box-shadow: 0 0 12px var(--color2);
+    transform: scale(1.02);
+}

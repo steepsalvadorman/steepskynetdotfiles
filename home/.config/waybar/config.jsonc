@@ -1,0 +1,154 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 48,
+    "margin-top": 4,
+    "margin-bottom": 0,
+    "margin-left": 8,
+    "margin-right": 8,
+    "spacing": 4,
+
+    "modules-left": ["custom/arch", "hyprland/workspaces", "mpris", "cava", "custom/guias"],
+    "modules-center": ["image#chibi", "clock"],
+    "modules-right": ["custom/brightness", "cpu", "memory", "temperature", "pulseaudio", "network", "tray"],
+
+    "custom/arch": {
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "bash -c 'wofi --show drun &'",
+        "on-click-right": "bash -c '~/.config/waybar/session_menu.sh &'"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "all-outputs": true,
+        "sort-by-number": true,
+        "format-icons": {
+            "default": "○",
+            "active": "◉",
+            "urgent": "⬤"
+        },
+        "ignore-workspaces": ["special"]
+    },
+
+    "custom/guias": {
+        "format": " 📋 Atajos ",
+        "on-click": "bash -c '~/.config/hypr/scripts/menu_guias.sh &'",
+        "tooltip": false
+    },
+
+    "mpris": {
+        "format": "{player_icon} {title} — {artist}",
+        "format-paused": "󰏤 {title} — {artist}",
+        "player-icons": {
+            "spotify": "󰓇",
+            "firefox": "󰈹",
+            "chromium": "󰊯",
+            "default": "󰎈"
+        },
+        "status-icons": {
+            "paused": "󰏤",
+            "playing": "󰐊",
+            "stopped": "󰓛"
+        },
+        "ignored-players": ["playerctld"],
+        "max-length": 45,
+        "interval": 2,
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "tooltip-format": "{title}\n{artist}\n{album}\n󰓇 {player}"
+    },
+
+    "cava": {
+        "framerate": 90,
+        "autosens": 0,
+        "sensitivity": 5,
+        "bars": 14,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pipewire",
+        "source": "auto",
+        "stereo": true,
+        "bar_delimiter": 0,
+        "noise_reduction": 0.35,
+        "input_delay": 0,
+        "format-icons": [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+        "actions": {
+            "on-click-right": "mode"
+        }
+    },
+
+    "image#chibi": {
+        "exec": "timeout 2 ~/.config/hypr/companion/waybar_chibi.py 2>/dev/null || echo ''",
+        "size": 34,
+        "interval": 2,
+        "restart-interval": 5
+    },
+
+    "clock": {
+        "format": "󱑂 {:%H:%M:%S}",
+        "format-alt": "󰃭 {:%A, %d %B %Y}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "interval": 1
+    },
+
+    "custom/brightness": {
+        "format": "󰃟 {}%",
+        "exec": "timeout 3 ddcutil getvcp 10 2>/dev/null | grep -oP 'current value =\\s*\\K[0-9]+' || echo '?'",
+        "interval": 10,
+        "on-scroll-up": "bash -c 'ddcutil setvcp 10 + 5 &'",
+        "on-scroll-down": "bash -c 'ddcutil setvcp 10 - 5 &'",
+        "tooltip": false,
+        "restart-interval": 10
+    },
+
+    "cpu": {
+        "format": "󰻠 {usage}%",
+        "interval": 2,
+        "tooltip": false
+    },
+
+    "memory": {
+        "format": "󰍛 {percentage}%",
+        "interval": 5,
+        "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB"
+    },
+
+    "temperature": {
+        "critical-threshold": 85,
+        "format": "󰔏 {temperatureC}°C",
+        "format-critical": "󰸁 {temperatureC}°C",
+        "interval": 5
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}% {format_source}",
+        "format-muted": "󰝟 muted",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "bash -c 'pavucontrol &'",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+        "scroll-step": 5
+    },
+
+    "network": {
+        "format-wifi": "󰤨 {essid}",
+        "format-ethernet": "󰈀 {ipaddr}",
+        "format-disconnected": "󰤭 offline",
+        "tooltip-format-wifi": "{signalStrength}% — {frequency}MHz",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+        "interval": 10
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive-items": false
+    }
+}
