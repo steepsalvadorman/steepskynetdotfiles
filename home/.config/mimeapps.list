@@ -1,2 +1,10 @@
 [Added Associations]
 image/png=chromium.desktop;
+
+[Default Applications]
+x-scheme-handler/antigravity=antigravity.desktop
+text/html=chromium.desktop
+x-scheme-handler/http=chromium.desktop
+x-scheme-handler/https=chromium.desktop
+x-scheme-handler/about=chromium.desktop
+x-scheme-handler/unknown=chromium.desktop

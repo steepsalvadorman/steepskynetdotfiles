@@ -12,3 +12,24 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 export PATH=~/.npm-global/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/steepskynet/.local/bin:$PATH"
+export PATH="/home/steepskynet/.local/bin:$PATH"
+
+
+# ---------------------------------------------------------------------
+# Mis Alias y Atajos Personales
+# ---------------------------------------------------------------------
+alias lofi="bash /home/steepskynet/Documentos/anime/lofi_anime.sh"
+
+# Pokémon Fastfetch
+alias pokefetch="bash ~/.config/hypr/companion/pokefetch.sh"
+alias pf="pokefetch"
+
+# ============================================================
+# 🐱 PokéFetch - Ejecutar al abrir terminal (Hyde style)
+# ============================================================
+# Descomenta la siguiente línea para que se ejecute automáticamente
+# pokefetch

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "show_pokemon_ascii": true,
+    "show_pokemon_image": true,
+    "show_decorations": true,
+    "colors": {
+      "primary": "pokemon_red",
+      "secondary": "pokemon_yellow",
+      "accent": "pokemon_blue"
+    }
+  },
+  "pokemon": {
+    "rotation_interval_minutes": 30,
+    "random_on_boot": true,
+    "cache_frames": true
+  },
+  "information": {
+    "show_os": true,
+    "show_kernel": true,
+    "show_shell": true,
+    "show_uptime": true,
+    "show_packages": true,
+    "show_cpu": true,
+    "show_ram": true,
+    "show_gpu": true,
+    "show_disk": true,
+    "show_wm": true
+  },
+  "font": {
+    "use_nerd_fonts": true,
+    "recommended": "JetBrainsMono Nerd Font"
+  }
+}

@@ -20,9 +20,7 @@ copy_path() {
 
 cleanup_ignored_state() {
   rm -rf \
-    "$HOME_DST/.config/hypr/dashboard/chrome-profile" \
     "$HOME_DST/.config/hypr/companion/__pycache__" \
-    "$HOME_DST/.config/hypr/dashboard/__pycache__" \
     "$HOME_DST/.config/OpenRGB/logs"
 
   find "$HOME_DST" -type f \( -name '*.bak' -o -name '*.pyc' -o -name '*.log' \) -delete
@@ -44,17 +42,20 @@ copy_path "$HOME/.config/fontconfig"
 copy_path "$HOME/.config/gtk-3.0"
 copy_path "$HOME/.config/Thunar"
 copy_path "$HOME/.config/OpenRGB"
+copy_path "$HOME/.config/wal"
+copy_path "$HOME/.config/pokefetch"
+copy_path "$HOME/.config/fastfetch"
 copy_path "$HOME/.config/mimeapps.list"
 copy_path "$HOME/.config/user-dirs.dirs"
 copy_path "$HOME/.config/user-dirs.locale"
 
-pacman -Qqe > "$DOTFILES_DIR/packages/pacman-explicit.txt"
-pacman -Qqm > "$DOTFILES_DIR/packages/aur.txt"
+pacman -Qqe | sort > "$DOTFILES_DIR/packages/pacman-explicit.txt"
+pacman -Qqm | sort > "$DOTFILES_DIR/packages/aur.txt"
 comm -23 "$DOTFILES_DIR/packages/pacman-explicit.txt" "$DOTFILES_DIR/packages/aur.txt" > "$DOTFILES_DIR/packages/pacman-native.txt"
 
 if command -v npm >/dev/null 2>&1; then
-  npm list -g --depth=0 --parseable \
-    | sed "s#^$HOME/.npm-global/lib/node_modules/##; /^$HOME\\/\\.npm-global\\/lib$/d" \
+  (npm list -g --depth=0 --parseable 2>/dev/null || true) \
+    | awk -v home="$HOME" '$0 ~ "^"home"/.npm-global/lib/node_modules/" { sub("^"home"/.npm-global/lib/node_modules/", ""); print; next } $0 == home"/.npm-global/lib" { next } { print }' \
     > "$DOTFILES_DIR/packages/npm-global.txt"
 fi
 
