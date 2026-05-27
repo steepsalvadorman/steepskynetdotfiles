@@ -1,62 +1,88 @@
-# Dotfiles
+# steepskynet dotfiles
 
-Personal dotfiles for the `steepskynet` Linux desktop.
+Arch Linux desktop · Hyprland · Mirror's Edge aesthetic
+
+![Desktop](assets/desktop.png)
+
+## Stack
+
+| Layer | Tool |
+|---|---|
+| Compositor | [Hyprland](https://hyprland.org) |
+| Bar | [eww](https://github.com/elkowar/eww) |
+| Projects popup | [AGS / Astal](https://aylur.github.io/astal) |
+| Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/) |
+| Launcher | [Wofi](https://hg.sr.ht/~scoopta/wofi) |
+| Notifications | [SwayNC](https://github.com/ErikReider/SwayNotificationCenter) |
+| Theming | [pywal](https://github.com/dylanaraps/pywal) |
+| Shell | Zsh + Powerlevel10k |
+| GPU | NVIDIA (drivers + NVAPI + DXVK) |
+| Display | 2560×1440 @ 180 Hz (DP-1) |
+
+## Bar widgets
+
+- Workspaces (hyprctl live listener)
+- Clock + date
+- Music player (playerctl → Chromium/Spotify)
+- CPU · CPU temp · RAM · GPU · GPU temp
+- CAVA VU meter
+- Volume slider (wpctl)
+- Docker status (lazydocker)
+- OBS recording badge
+- Notification bell (swaync)
+- **Projects popup** — scans `~/Documentos/programacion/` by language, opens in VS Code (powered by AGS)
+
+## Color theming
+
+Colors are generated live from the wallpaper via **pywal**.  
+Template: `~/.config/wal/templates/eww-colors.css` → `~/.cache/wal/eww-colors.css`
+
+After changing wallpaper run:
+```bash
+wal -i /path/to/wallpaper
+```
+
+## Gaming config (Hyprland)
+
+- `allow_tearing = true` + `vrr = 2` for low-latency gaming
+- `immediate` rendering for Steam games (`steam_app_*`)
+- Full-screen rules for Diablo IV and Marvel Rivals
+- NVIDIA: `NVD_BACKEND=direct`, `PROTON_ENABLE_NVAPI=1`, `DXVK_ASYNC=1`
 
 ## What is included
 
-- Shell config: `.zshrc`, `.bashrc`, `.bash_profile`, `.p10k.zsh`, `.npmrc`
-- Desktop config: Hyprland, Waybar, Kitty, Wofi, Cava, GTK, Thunar, OpenRGB, fontconfig
-- Package manifests:
-  - `packages/pacman-native.txt` for official Arch packages
-  - `packages/aur.txt` for AUR packages
-  - `packages/npm-global.txt` for global npm packages
-  - `packages/Brewfile` for Homebrew, when available
-  - `packages/dconf.ini` for optional dconf settings
+- Shell: `.zshrc` · `.bashrc` · `.bash_profile` · `.p10k.zsh` · `.npmrc`
+- Config: Hyprland · eww · AGS · Kitty · Wofi · Cava · GTK · Thunar · OpenRGB · fontconfig · pywal templates
+- Package lists: `packages/pacman-native.txt` · `packages/aur.txt` · `packages/npm-global.txt`
 
-Browser profiles, caches, cookies, shell history, GPG keys and SSH keys are intentionally excluded.
+Browser profiles, caches, shell history, GPG/SSH keys excluded.
 
 ## Install on a new machine
 
-Clone the repository:
-
 ```bash
-git clone https://github.com/<your-user>/<your-repo>.git ~/dotfiles
+git clone https://github.com/steepsalvadorman/steepsamadotfiles.git ~/dotfiles
 cd ~/dotfiles
-```
-
-Restore only files:
-
-```bash
 ./install.sh
 ```
 
-Restore files and install packages:
+Restore only files:
+```bash
+./install.sh --files
+```
 
+Restore files + packages:
 ```bash
 ./install.sh --all
 ```
 
-More selective examples:
+Backup of existing files is written to `~/.dotfiles-backup/<timestamp>/` before overwriting.
+
+## Refresh repo from current machine
 
 ```bash
-./install.sh --files --packages
-./install.sh --aur
-./install.sh --npm
-./install.sh --dconf
-```
-
-Existing files are copied to `~/.dotfiles-backup/<timestamp>/` before being replaced.
-
-## Refresh this repo from the current machine
-
-After changing local configuration:
-
-```bash
+cd ~/dotfiles
 ./scripts/update-from-home.sh
-git status
 git add .
 git commit -m "Update dotfiles"
 git push
 ```
-
-Review `git diff` before committing so secrets or machine-specific state do not enter the repo.

@@ -76,7 +76,7 @@ main() {
     fi
     
     # Imprimir información a la derecha (comienza después de 28 espacios de margen)
-    printf "                            ${C_BOLD}${C_RED}Steep${C_RESET}${C_BOLD}${C_GRAY}@${C_RESET}${C_BOLD}${C_RED}cachyos${C_RESET}\n"
+    printf "                            ${C_BOLD}${C_RED}Steep Salvador${C_RESET}\n"
     printf "                            ${C_GRAY}---------------------------${C_RESET}\n"
     
     print_info "OS" "$OS" "$C_CYAN"

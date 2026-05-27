@@ -1,0 +1,16 @@
+#!/bin/bash
+
+case "$1" in
+  logout)
+    loginctl terminate-session ${XDG_SESSION_ID:-$SESSION}
+    ;;
+  reboot)
+    systemctl reboot
+    ;;
+  shutdown)
+    systemctl poweroff
+    ;;
+  *)
+    echo "Uso: $0 {logout|reboot|shutdown}"
+    ;;
+esac

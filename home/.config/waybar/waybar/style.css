@@ -1,262 +1,399 @@
-@import url("/home/steepskynet/.cache/wal/waybar-colors.css");
+@import url("/home/steepskynet/.cache/wal/colors-waybar.css");
+
+
+
+/* === CONFIGURACIÓN BASE GLOBAL === */
 
 * {
+
     font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
-    font-size: 13px;
+
+    font-size: 14px;
+
     font-weight: 600;
+
     border: none;
+
     border-radius: 0;
+
     min-height: 0;
+
     padding: 0;
+
     margin: 0;
+
 }
 
+
+
+/* === CONTENEDOR PRINCIPAL COMUNICANDO MÓDULOS FLOTANTES === */
 
 window#waybar {
+
     background-color: transparent;
+
     background: transparent;
-    box-shadow: none;	 
+
+    box-shadow: none;    
+
 }
+
+
 
 window#waybar > box {
-    background: rgba(2, 2, 4, 0.80); 
-    border-radius: 10px;             
-    border: 2px solid rgba(255, 255, 255, 0.05); 
-    box-shadow: none;               
-    margin: 6px 8px 0px 8px; 
+
+    background: transparent;
+
+    border: none;
+
+    box-shadow: none;
+
+    margin: 6px 12px 0px 12px; 
+
+    padding: 0;
+
     opacity: 1;
+
 }
+
+
 
 .modules-left,
+
 .modules-center,
+
 .modules-right {
+
     margin: 0;
+
     padding: 0;
+
 }
 
-.modules-center {
-    margin-top: 0;
-}
+
+
+/* === BASE DE LAS CÁPSULAS FLOTANTES === */
 
 #workspaces,
+
 #clock,
+
 #pulseaudio,
+
 #network,
-#tray,
+
 #cpu,
+
 #memory,
+
 #temperature,
+
 #mpris,
-#cava,
+
 #custom-arch,
+
 #custom-brightness,
-#custom-guias {
-    background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 4px 12px 6px 12px;   /* ← más espacio abajo para separar el border del edge */
-    margin: 0 1px;
-    color: rgba(255, 255, 255, 0.35);
-    transition: all 0.18s ease;
+
+#custom-guias,
+
+#custom-swaync,
+
+#custom-docker {
+
+    background: rgba(17, 17, 27, 0.75); 
+
+    border-radius: 10px;
+
+    
+
+    /* Bordes estructurales ultra sutiles (sin colores chillones en la caja) */
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4); 
+
+    
+
+    /* CONTROL DE ALTURA PERFECTO */
+
+    padding: 0px 14px;
+
+    margin: 4px 6px;
+
+    min-height: 34px;  
+
+    
+
+    transition: all 0.2s ease;
+
 }
 
+
+
+/* === WORKSPACES === */
 
 #workspaces {
-    padding: 4px 6px 6px 6px;     /* ← mismo ajuste */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    background: rgba(17, 17, 27, 0.85);
+
+    padding: 0px 6px;
+
 }
+
 
 
 #workspaces button {
+
     background: transparent;
+
     color: rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    padding: 4px 8px;
-    margin: 0;
-    font-size: 15px;
-    border-bottom: 1px solid transparent;
-    transition: all 0.18s ease;
+
+    border-radius: 6px;
+
+    padding: 0px 8px;
+
+    margin: 0px 1px;
+
+    font-size: 14px;
+
 }
 
-#workspaces button:hover,
-#workspaces button:active {
-    color: #00d2ff;
-    border-bottom: 1px solid #00d2ff;
-    text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+
+
+#workspaces button.has-windows {
+
+    color: rgba(255, 255, 255, 0.6);
+
 }
+
+
 
 #workspaces button.active {
-    color: #00d2ff;
-    border-bottom: 1px solid #00d2ff;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
+
+    color: #00f0ff;
+
+    background: rgba(0, 240, 255, 0.15);
+
+    text-shadow: 0px 0px 6px #00f0ff;
+
 }
 
-#workspaces button.urgent {
-    color: #ff003c;
-    border-bottom: 1px solid #ff003c;
-    text-shadow: 0 0 8px rgba(255, 0, 60, 0.7);
+
+
+#workspaces button:hover {
+
+    color: #00f0ff;
+
 }
+
+
+
+
+
+/* === LOGO DE ARCH: EFECTO NEÓN EN LA SILUETA DEL ICONO === */
 
 #custom-arch {
-    color: #1793d1;
-    background: transparent;
-    border-bottom: 1px solid transparent;
-    border-right: none;
-    font-size: 24px;
-    padding: 0 18px 0 14px;
-    text-shadow:
-        0 0 6px rgba(23, 147, 209, 0.95),
-        0 0 14px rgba(23, 147, 209, 0.85),
-        0 0 28px rgba(23, 147, 209, 0.55);
+
+    color: #00f0ff; 
+
+    font-size: 24px; /* Un poco más grande para destacar el glifo */
+
+    
+
+    /* ELIMINADOS los bordes de la caja para que no dibuje el cuadrado azul */
+
+    background: rgba(17, 17, 27, 0.75); 
+
+    border: none;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+
+    box-shadow: none;
+
+
+
+    /* REGLAS DE CENTRADO MANUAL EXACTO */
+
+    padding-top: 0px;
+
+    padding-bottom: 0px;
+
+    padding-left: 10px;
+
+    padding-right: 15px;
+
+    min-height: 34px;
+
+    
+
+    /* TRIPLE CAPA TEXT-SHADOW: Genera la luz neón pegada a los bordes del glifo de Arch */
+
+    text-shadow: 0px 0px 4px #00f0ff,
+
+                 0px 0px 10px #00f0ff,
+
+                 0px 0px 18px rgba(0, 240, 255, 0.9);
+
 }
 
-#custom-arch:hover,
-#custom-arch:active {
-    background: transparent;
-    color: #39c5ff;
-    text-shadow:
-        0 0 8px rgba(57, 197, 255, 1),
-        0 0 18px rgba(57, 197, 255, 0.95),
-        0 0 36px rgba(57, 197, 255, 0.7);
-}
+
+
+
+
+/* === REPRODUCTOR (MPRIS) === */
 
 #mpris {
-    color: #00ff66;
-    border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+
+    color: @color2;
+
     font-style: italic;
+
 }
 
-#mpris:hover, #mpris:active {
-    border-bottom-color: #00ff66;
-    text-shadow: 0 0 8px rgba(0, 255, 102, 0.7);
+
+
+/* === ESPECTRO DE AUDIO CAVA === */
+#custom-cava {
+    background: rgba(17, 17, 27, 0.8);
+    border-radius: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+
+    padding: 0px 12px;
+    margin: 4px 6px;
+    min-height: 34px;
+    min-width: 96px;
+
+    transition: all 0.25s ease;
 }
 
-#cava {
-    color: #ffb000;
-    border-bottom: 1px solid rgba(255, 176, 0, 0.2);
-    font-weight: bold;
+#custom-cava:hover {
+    background: rgba(17, 17, 27, 0.92);
+    box-shadow: 0px 0px 18px rgba(0, 234, 255, 0.2);
 }
 
-#cava:hover, #cava:active {
-    border-bottom-color: #ffb000;
-    text-shadow: 0 0 10px rgba(255, 176, 0, 0.7);
+#custom-cava span {
+    letter-spacing: -2px;
+    text-shadow: 0px 0px 6px currentcolor,
+                 0px 0px 12px currentcolor;
 }
 
-#clock {
-    color: #d500ff;
-    border-bottom: 1px solid rgba(213, 0, 255, 0.5);
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-shadow: 0 0 6px rgba(213, 0, 255, 0.4);
-}
 
-#clock:hover, #clock:active {
-    border-bottom-color: #d500ff;
-    text-shadow: 0 0 10px rgba(213, 0, 255, 0.8);
-}
 
-#custom-brightness {
-    color: #ffea00;
-    border-bottom: 1px solid rgba(255, 234, 0, 0.2);
-}
 
-#custom-brightness:hover, #custom-brightness:active {
-    border-bottom-color: #ffea00;
-    text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
-}
-
-#cpu {
-    color: #ff6600;
-    border-bottom: 1px solid rgba(255, 102, 0, 0.2);
-}
-
-#cpu:hover, #cpu:active {
-    border-bottom-color: #ff6600;
-    text-shadow: 0 0 8px rgba(255, 102, 0, 0.7);
-}
-
-#memory {
-    color: #ffea00;
-    border-bottom: 1px solid rgba(255, 234, 0, 0.2);
-}
-
-#memory:hover, #memory:active {
-    border-bottom-color: #ffea00;
-    text-shadow: 0 0 8px rgba(255, 234, 0, 0.7);
-}
-
-#temperature {
-    color: #00ff66;
-    border-bottom: 1px solid rgba(0, 255, 102, 0.2);
-}
-
-#temperature:hover, #temperature:active {
-    border-bottom-color: #00ff66;
-    text-shadow: 0 0 8px rgba(0, 255, 102, 0.7);
-}
-
-#temperature.critical {
-    color: #ff003c;
-    border-bottom-color: #ff003c;
-    text-shadow: 0 0 8px rgba(255, 0, 60, 0.8);
-    animation: blink 1s steps(1) infinite;
-}
-
-#pulseaudio {
-    color: #00e5ff;
-    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-}
-
-#pulseaudio:hover, #pulseaudio:active {
-    border-bottom-color: #00e5ff;
-    text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
-}
-
-#pulseaudio.muted {
-    color: rgba(255, 255, 255, 0.2);
-    border-bottom-color: transparent;
-}
-
-#network {
-    color: #00e5ff;
-    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-}
-
-#network:hover, #network:active {
-    border-bottom-color: #00e5ff;
-    text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
-}
-
-#network.disconnected {
-    color: #ff003c;
-    border-bottom-color: rgba(255, 0, 60, 0.5);
-    text-shadow: 0 0 8px rgba(255, 0, 60, 0.7);
-}
-
-#tray {
-    padding: 2px 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-}
+/* === BOTÓN DE ATAJOS NEÓN (CONCENTRADOS EN EL TEXTO) === */
 
 #custom-guias {
-    color: #aa00ff;
-    border-bottom: 1px solid rgba(170, 0, 255, 0.2);
+
+    color: #00f0ff;
+
+    font-size: 14px;
+
+    padding: 0px 16px;
+
+    
+
+    background: rgba(17, 17, 27, 0.75);
+
+    border: none;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+
+    box-shadow: none;
+
+    
+
+    text-shadow: 0px 0px 5px #00f0ff,
+
+                 0px 0px 12px rgba(0, 240, 255, 0.8);
+
 }
 
-#custom-guias:hover, #custom-guias:active {
-    border-bottom-color: #aa00ff;
-    text-shadow: 0 0 8px rgba(170, 0, 255, 0.7);
+
+
+
+
+/* === COMPONENTES CON BRILLO EN TEXTO DINÁMICO === */
+
+#clock {
+
+    color: #00ffff;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-shadow: 0px 0px 6px rgba(0, 255, 255, 0.6);
+
 }
 
-@keyframes blink {
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
+
+
+/* Brillos neon nativos aplicados a las fuentes/iconos de la paleta pywal */
+
+#cpu { color: @color1; text-shadow: 0px 0px 5px @color1; }
+
+#memory { color: @color6; text-shadow: 0px 0px 5px @color6; }
+
+#temperature { color: @color2; text-shadow: 0px 0px 5px @color2; }
+
+
+
+#temperature.critical {
+
+    color: #ff003c;
+
+    border-color: #ff003c;
+
+    text-shadow: 0px 0px 6px #ff003c;
+
 }
+
+
+
+#pulseaudio { color: @color5; text-shadow: 0px 0px 5px @color5; }
+
+#pulseaudio.muted { color: rgba(255, 255, 255, 0.2); text-shadow: none; }
+
+
+
+#network { color: @color5; text-shadow: 0px 0px 5px @color5; }
+
+#network.disconnected { color: #ff003c; }
+
+
+
+#custom-brightness { color: @color6; text-shadow: 0px 0px 5px @color6; }
+
+
+
+/* === NOTIFICACIONES SWAYNC === */
+
+#custom-swaync { font-size: 16px; }
+
+#custom-swaync.none { color: rgba(255, 255, 255, 0.35); }
+
+#custom-swaync.notification {
+
+    color: #ff5555; 
+
+    text-shadow: 0px 0px 6px #ff5555;
+
+}
+
+
+
+/* === MÓDULO DOCKER CONTENEDORES === */
+
+#custom-docker { color: @color5; text-shadow: 0px 0px 5px @color5; } 
+

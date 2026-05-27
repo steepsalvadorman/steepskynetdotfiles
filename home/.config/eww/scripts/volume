@@ -1,0 +1,15 @@
+#!/bin/bash
+# Manejo de volumen con wpctl (PipeWire)
+
+case "$1" in
+    --get)
+        vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf "%.0f", $2 * 100}')
+        echo "${vol:-0}"
+        ;;
+    --muted)
+        wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED && echo "true" || echo "false"
+        ;;
+    --toggle)
+        wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+        ;;
+esac

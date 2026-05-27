@@ -1,84 +1,123 @@
-@import "../../.cache/wal/colors-waybar.css";
+/* ── Wofi — Skeuomorphism Silver ──────────────────────── */
 
-/* ── Wofi Glassmorphic Neon Style ────────────────────────── */
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 13px;
+    color: #1d2021;
+}
 
 window {
-    margin: 0px;
-    border: 2px solid @color1; /* Borde Neon Dinámico extraído del wallpaper */
-    border-radius: 12px;
-    background-color: rgba(17, 17, 27, 0.8); /* Fondo oscuro translúcido */
-    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
-    font-size: 13px;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 16px;
+    background: linear-gradient(
+        175deg,
+        rgb(218, 222, 234) 0%,
+        rgb(190, 196, 212) 55%,
+        rgb(175, 182, 200) 100%
+    );
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.92),
+        inset 0 -1px 0 rgba(140, 148, 168, 0.35);
 }
 
 #outer-box {
     margin: 10px;
-    border: none;
-    background-color: transparent;
+    background: transparent;
 }
 
+/* ── Campo de búsqueda — efecto hundido ── */
 #input {
-    margin: 5px;
-    border: 1px solid @color8;
-    border-radius: 8px;
-    padding: 8px 12px;
-    background-color: rgba(30, 30, 46, 0.6);
-    color: #cdd6f4;
+    margin: 0 0 8px 0;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(140, 148, 168, 0.55);
+    background: rgb(185, 190, 208);
+    color: #1d2021;
     font-weight: bold;
-    caret-color: @color1;
+    caret-color: #076678;
+    box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.18),
+        inset 0 1px 2px rgba(0, 0, 0, 0.10),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.40);
 }
 
 #input:focus {
-    border-color: @color1;
-    box-shadow: 0 0 8px @color1;
+    border-color: rgba(7, 102, 120, 0.60);
+    background: rgb(178, 184, 204);
+    box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.22),
+        inset 0 1px 2px rgba(0, 0, 0, 0.12),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.35);
 }
 
 #scroll {
-    margin: 5px;
-    border: none;
-    background-color: transparent;
+    margin: 0;
+    background: transparent;
 }
 
 #inner-box {
-    margin: 5px;
-    border: none;
-    background-color: transparent;
+    margin: 0;
+    background: transparent;
 }
 
+/* ── Entradas — botones metálicos ── */
 #entry {
     padding: 8px 12px;
-    border-radius: 8px;
-    color: #cdd6f4;
-    background-color: transparent;
-    transition: all 0.2s ease;
+    margin: 2px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: linear-gradient(175deg, rgb(240, 244, 252) 0%, rgb(215, 220, 234) 100%);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.88),
+        inset 0 -1px 0 rgba(140, 148, 168, 0.28);
+    transition: background 100ms ease, box-shadow 100ms ease;
 }
 
 #entry:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(175deg, rgb(255, 255, 255) 0%, rgb(228, 233, 246) 100%);
+    border-color: rgba(255, 255, 255, 0.80);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.96),
+        inset 0 -1px 0 rgba(140, 148, 168, 0.22);
 }
 
 #entry:selected {
-    background-color: @color1;
-    border: 1px solid @color2;
-    color: #ffffff;
+    background: linear-gradient(175deg, rgb(55, 118, 138) 0%, rgb(38, 98, 118) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.20);
+}
+
+#entry:active,
+#entry:selected:active {
+    background: linear-gradient(175deg, rgb(162, 169, 190) 0%, rgb(208, 213, 227) 100%);
+    border-color: rgba(100, 108, 130, 0.60);
+    box-shadow:
+        inset 0 5px 10px rgba(0, 0, 0, 0.30),
+        inset 0 2px 4px rgba(0, 0, 0, 0.18),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+    transition: none;
 }
 
 #text {
-    background-color: transparent;
-    color: inherit;
+    background: transparent;
+    color: #1d2021;
 }
 
 #text:selected {
-    background-color: transparent;
-    color: #ffffff;
+    background: transparent;
+    color: #f9f5d7;
     font-weight: bold;
 }
 
 #img {
-    margin-right: 12px;
-    background-color: transparent;
+    margin-right: 10px;
+    background: transparent;
+    border-radius: 6px;
 }
 
 #img:selected {
-    background-color: transparent;
+    background: transparent;
 }

@@ -1,0 +1,343 @@
+;; ─────────────────────────────────────────────
+;;  EWW CONFIG — Gruvbox Dark
+;; ─────────────────────────────────────────────
+
+(defpoll clock_hour    :interval "5s"  :initial "00" "date '+%H'")
+(defpoll clock_min     :interval "5s"  :initial "00" "date '+%M'")
+(defpoll clock_date    :interval "1m"  :initial "---" "date '+%a %d %b'")
+
+(deflisten workspaces
+  :initial "(box)"
+  "~/.config/eww/scripts/workspaces-listen")
+(defpoll cpu_temp :interval "5s" :initial "0" "~/.config/eww/scripts/sysinfo --cputemp")
+(defpoll volume        :interval "2s"  :initial "50"    "~/.config/eww/scripts/volume --get")
+(defpoll muted         :interval "2s"  :initial "false" "~/.config/eww/scripts/volume --muted")
+
+(defpoll cpu_usage     :interval "3s"  :initial "0"   "~/.config/eww/scripts/sysinfo --cpu")
+(defpoll ram_usage     :interval "3s"  :initial "0"   "~/.config/eww/scripts/sysinfo --ram")
+(defpoll gpu_usage     :interval "3s"  :initial "0"   "~/.config/eww/scripts/sysinfo --gpu")
+(defpoll gpu_temp      :interval "5s"  :initial "0"   "~/.config/eww/scripts/sysinfo --gputemp")
+
+(defpoll docker_count  :interval "5s"  :initial "0"       "~/.config/eww/scripts/docker_status --count")
+(defpoll docker_icon   :interval "5s"  :initial "󰡨"       "~/.config/eww/scripts/docker_status --icon")
+(defpoll docker_color  :interval "5s"  :initial "#504945"  "~/.config/eww/scripts/docker_status --color")
+
+(defpoll obs_status    :interval "3s"  :initial "inactivo" "~/.config/eww/scripts/obs_status --status")
+(defpoll obs_icon      :interval "3s"  :initial "󰐸"       "~/.config/eww/scripts/obs_status --icon")
+(defpoll obs_color     :interval "3s"  :initial "#9499ad"  "~/.config/eww/scripts/obs_status --color")
+(defpoll obs_active    :interval "3s"  :initial "false"    "~/.config/eww/scripts/obs_status --active")
+
+(defpoll song_title    :interval "2s"  :initial "Sin reproducción" "~/.config/eww/scripts/music --title")
+(defpoll song_artist   :interval "2s"  :initial ""                 "~/.config/eww/scripts/music --artist")
+(defpoll song_status   :interval "2s"  :initial ""                "~/.config/eww/scripts/music --status")
+(defpoll song_cover    :interval "2s"  :initial ""                 "~/.config/eww/scripts/music --cover")
+
+(defpoll notif_count   :interval "5s"  :initial "0"       "~/.config/eww/scripts/alerts --count")
+(defpoll notif_color   :interval "5s"  :initial "#504945"  "~/.config/eww/scripts/alerts --color")
+
+(defvar vol_open   false)
+(defvar sys_open   false)
+(defvar music_open false)
+(defvar EWW "eww -c $HOME/.config/eww")
+
+(defvar wal_accent  "#B4D13A")
+(defvar wal_accent2 "#6A9633")
+
+(deflisten cava_markup
+  :initial "<span color='#c0bbb4'>▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</span>"
+  "~/.config/eww/scripts/cava")
+
+
+;; ── CAVA VU Meter ────────────────────────────
+(defwidget w_cava []
+  (box
+    :class "cava-pill"
+    :space-evenly false
+    :valign "center"
+    :halign "center"
+    (label
+      :class "cava-led-label"
+      :halign "center"
+      :valign "center"
+      :markup cava_markup)))
+
+;; ── Logo ─────────────────────────────────────
+(defwidget w_logo []
+  (box :space-evenly false :valign "center" :halign "center"
+    (button :class "logo-btn"
+            :onclick "sh -c 'wofi --show drun &'"
+            :onrightclick "bash -c '~/.config/waybar/session_menu.sh &'"
+            :tooltip "󰣇 Lanzador de apps · clic derecho: menú de sesión"
+      (image :path "/home/steepskynet/.config/eww/icons/archlinux.svg" :image-width 20 :image-height 20 :valign "center" :halign "center"))))
+
+;; ── Workspaces ───────────────────────────────
+(defwidget w_workspaces []
+  (box :valign "center" :halign "center" :space-evenly false
+    (literal :content workspaces)))
+
+;; ── Proyectos ────────────────────────────────
+(defwidget w_projects []
+  (button
+    :class "icon-pill projects-btn"
+    :valign "center"
+    :tooltip "󰘦 Proyectos · Documentos/programacion"
+    :onclick "ags request toggle -i projects-popup &"
+    (box :space-evenly false :spacing 5 :valign "center"
+      (label :class "icon-label" :text "󰘦" :valign "center")
+      (label :class "projects-pill-label" :text "Dev" :valign "center"))))
+
+;; ── Btop ─────────────────────────────────────
+(defwidget w_btop []
+  (button
+    :class "icon-pill"
+    :valign "center"
+    :tooltip " Btop · monitor del sistema"
+    :onclick "kitty --title \"Btop Monitor\" sh -c \"btop\" &"
+    (image
+      :path "/home/steepskynet/.config/eww/icons/btop.svg"
+      :image-width 16
+      :image-height 16
+      :valign "center")))
+
+(defwidget w_music []
+  (box
+    :class "music-pill"
+    :space-evenly false
+    :spacing 10
+    :valign "center"
+
+    ;; Cover (Izquierda fija)
+    (box
+      :class "music-cover"
+      :valign "center"
+      :style {song_cover != "" ?
+          "background-image: url('${song_cover}'); border-color: ${wal_accent};" :
+          "background-image: url('file:///home/steepskynet/.config/eww/icons/music-placeholder.svg'); background-size: cover; background-position: center; border-color: ${wal_accent};"})
+
+    ;; Metadata (Centro expandible: empuja el espacio sobrante)
+    (box
+      :class "music-text-box"
+      :orientation "v"
+      :space-evenly false
+      :spacing 0
+      :valign "center"
+      :hexpand true   ;; <-- CRITICAL: Esto absorbe el espacio vacío de la derecha
+
+      (label
+        :class "music-title"
+        :text song_title
+        :limit-width 22
+        :wrap false
+        :halign "start")
+
+      (label
+        :class "music-artist"
+        :text {song_artist != "" ? song_artist : "Desconocido"}
+        :limit-width 18
+        :wrap false
+        :halign "start"))
+
+    ;; Controls (Derecha fija)
+    (box
+      :class "music-controls"
+      :space-evenly false
+      :spacing 12     ;; Aumentado un poco para que los iconos respiren mejor
+      :valign "center"
+      :halign "end"
+
+      ;; Backward
+      (button
+        :class "music-btn prev"
+        :tooltip "󰒮 Retroceder 5s"
+        :onclick "playerctl -p chromium.instance1702585 position 5-"
+        (image :path "/home/steepskynet/.config/eww/icons/music-prev.svg" :image-width 14 :image-height 14))
+
+      ;; Play / Pause
+      (button
+        :class {song_status == "󰏤" ? "music-btn play" : "music-btn pause"}
+        :tooltip {song_status == "󰏤" ? "󰐊 Reproducir" : "󰏤 Pausar"}
+        :onclick "~/.config/eww/scripts/music --toggle"
+        (image :path {song_status == "󰏤" ? "/home/steepskynet/.config/eww/icons/music-play.svg" : song_status != "" ? "/home/steepskynet/.config/eww/icons/music-pause.svg" : "/home/steepskynet/.config/eww/icons/music-play.svg"}
+               :image-width 14 :image-height 14))
+
+      ;; Forward
+      (button
+        :class "music-btn next"
+        :tooltip "󰒭 Avanzar 5s"
+        :onclick "playerctl -p chromium.instance1702585 position 5+"
+        (image :path "/home/steepskynet/.config/eww/icons/music-next.svg" :image-width 14 :image-height 14)))))
+
+
+;; ── Reloj ────────────────────────────────────
+(defwidget w_clock []
+  (box :class "clock-pill" :space-evenly false :spacing 6 :valign "center"
+       :tooltip "󰃰 ${clock_date}"
+    (label :class "clock-time" :text "${clock_hour}:${clock_min}" :valign "center")
+    (label :class "clock-sep"  :text "·" :valign "center" :style "color: ${wal_accent};")
+    (label :class "clock-date" :text clock_date :valign "center")))
+
+;; ── Docker (TUI Mode) ────────────────────
+(defwidget w_docker []
+  (button
+    :class "icon-pill"
+    :valign "center"
+    :tooltip "󰡨 Docker · ${docker_count} contenedores activos"
+    :onclick "kitty --title \"LazyDocker TUI\" sh -c \"lazydocker\" &"
+    (box :space-evenly false :spacing 5 :valign "center"
+      (label :class "icon-label" :style "color: ${docker_color};" :text docker_icon :valign "center")
+      (label :class "icon-count" :style "color: ${docker_color};" :text docker_count :valign "center"))))
+
+;; ── OBS ──────────────────────────────────
+(defwidget w_obs []
+  (button
+    :class "icon-pill"
+    :valign "center"
+    :tooltip "󰐸 OBS Studio · ${obs_status}"
+    :onclick "obs &"
+    (overlay
+      (label
+        :class "icon-label"
+        :style "color: ${obs_color};"
+        :text obs_icon
+        :valign "center"
+        :halign "center")
+      (label
+        :class "obs-badge"
+        :visible {obs_active == "true"}
+        :text "⬤"
+        :halign "end"
+        :valign "start"))))
+
+;; ── Sysinfo ──────────────────────────────
+(defwidget w_sysinfo []
+  (box :class "sys-pill" :space-evenly false :spacing 12
+
+    ;; CPU
+    (box :space-evenly false :spacing 4
+      (image :path "/home/steepskynet/.config/eww/icons/cpu.svg" :image-width 15 :image-height 15)
+      (label :class "sys-val" :text "${cpu_usage}%"))
+
+    ;; CPU TEMP
+    (box :space-evenly false :spacing 4
+      (image :path "/home/steepskynet/.config/eww/icons/temp.svg" :image-width 13 :image-height 13)
+      (label :class "sys-temp" :text "${cpu_temp}°"))
+
+    ;; RAM
+    (box :space-evenly false :spacing 4
+      (image :path "/home/steepskynet/.config/eww/icons/ram.svg" :image-width 15 :image-height 15)
+      (label :class "sys-val" :text "${ram_usage}%"))
+
+    ;; GPU
+    (box :space-evenly false :spacing 4
+      (image :path "/home/steepskynet/.config/eww/icons/gpu.svg" :image-width 15 :image-height 15)
+      (label :class "sys-val" :text "${gpu_usage}%"))
+
+    ;; GPU TEMP
+    (box :space-evenly false :spacing 4
+      (image :path "/home/steepskynet/.config/eww/icons/temp-gpu.svg" :image-width 13 :image-height 13)
+      (label :class "sys-temp gpu-temp" :text "${gpu_temp}°"))))
+
+
+(defwidget w_volume []
+  (eventbox
+    :valign "center"
+    :onhover     "${EWW} update vol_open=true"
+    :onhoverlost "${EWW} update vol_open=false"
+    (box :class "vol-pill" :space-evenly false :spacing 6 :valign "center"
+      (button
+        :class "vol-icon"
+        :onclick "~/.config/eww/scripts/volume --toggle"
+        :valign "center"
+        (image :path {muted == "true" ? "/home/steepskynet/.config/eww/icons/vol-muted.svg" : volume < 30 ? "/home/steepskynet/.config/eww/icons/vol-low.svg" : volume < 70 ? "/home/steepskynet/.config/eww/icons/vol-mid.svg" : "/home/steepskynet/.config/eww/icons/vol-high.svg"}
+               :image-width 20 :image-height 20
+               :valign "center"))
+      (revealer
+        :transition "slideleft"
+        :reveal vol_open
+        :duration "250ms"
+        (scale
+          :class "vol-slider"
+          :value volume
+          :min 0
+          :max 100
+          :orientation "h"
+          :tooltip "󰕾 Volumen · ${volume}%"
+          :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%")))))
+
+
+;; ── Alertas ───────────────────────────────
+(defwidget w_alerts []
+  (button
+    :class "alerts-pill"
+    :valign "center"
+    :tooltip "󰂚 Notificaciones · ${notif_count} pendientes"
+    :onclick "swaync-client -t"
+    (box :space-evenly false :spacing 5 :valign "center"
+      (label :class "alerts-icon"
+             :style "color: ${notif_color};"
+             :text "󰂚")
+      (label :class "alerts-count"
+             :style "color: ${notif_color};"
+             :text notif_count
+             :visible {notif_count != "0"}))))
+
+
+;; ── Ensamblado Final (Sin duplicados) ──────
+(defwidget bar_left []
+  (box
+    :space-evenly false
+    :spacing 8
+    :halign "start"
+    :valign "center"
+    (w_logo)
+    (w_workspaces)))
+
+
+(defwidget bar_center []
+  (box
+    :halign "center"
+    :valign "center"
+    :space-evenly false
+    :spacing 8
+    (w_clock)
+    (w_music)))
+
+
+(defwidget bar_right []
+  (box
+    :space-evenly false
+    :spacing 6
+    :halign "end"
+    :valign "center"
+    (w_docker)
+    (w_btop)
+    (w_projects)
+    (w_obs)
+    (w_sysinfo)
+    (w_cava)
+    (w_volume)
+    (w_alerts)))
+
+(defwidget bar_root []
+  (centerbox :class "bar"
+             :style "border-bottom-color: ${wal_accent};"
+    (bar_left)
+    (bar_center)
+    (bar_right)))
+
+
+;; ── Ventana ───────────────────────────────────
+(defwindow bar
+  :monitor    "XG32WCS"
+  :exclusive  true
+  :focusable  false
+  :stacking   "fg"
+  :windowtype "dock"
+  :geometry (geometry
+    :x      "0px"
+    :y      "4px"
+    :width  "99%"
+    :height "42px"
+    :anchor "top center")
+  (bar_root))
+
