@@ -1,4 +1,5 @@
 antigravity-ide
+aylurs-gtk-shell
 aylurs-gtk-shell-debug
 beautyline
 cbonsai-debug
@@ -8,8 +9,11 @@ flutter-material-fonts-google-bin
 flutter-sky-engine-google-bin
 gtk2
 icu69
+libastal-4-git
 libastal-4-git-debug
+libastal-git
 libastal-git-debug
+libastal-io-git
 libastal-io-git-debug
 libcava-debug
 ncurses5-compat-libs

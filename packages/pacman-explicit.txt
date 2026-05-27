@@ -1,6 +1,7 @@
 alsa-utils
 antigravity-ide
 awww
+aylurs-gtk-shell
 base
 base-devel
 beautyline
