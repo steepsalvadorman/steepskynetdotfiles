@@ -9,17 +9,21 @@ import Quickshell.Io
 QtObject {
     id: root
 
-    property color bg: "#0f141d"
-    property color fg: "#e0e5ee"
-    property color accent: "#AACCEE"
-    property color accent2: "#99B2DA"
-    property color subtext: "#9ca0a6"
+    property color bg: "#ebf2f6fa"
+    property color fg: "#051630"
+    property color accent: "#0052cc"
+    property color accent2: "#00b3ff"
+    property color subtext: "#4c6385"
 
     // Fixed semantic colors carried over from the old alerts/docker scripts.
-    readonly property color danger: "#fb4934"
-    readonly property color warning: "#fabd2f"
+    readonly property color danger: "#1e3a8a"
+    readonly property color warning: "#2563eb"
     readonly property color idle: "#504945"
-    readonly property color success: "#8ec07c"
+    readonly property color success: "#0ea5e9"
+
+    property color cardBg: "#f2f8fcff"
+    property color glassBorder: "#b5cce8"
+    property color innerBevel: "#f2ffffff"
 
     property var palette: []
 
@@ -27,9 +31,9 @@ QtObject {
         const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0)
         if (lines.length < 16) return
         palette = lines
-        accent2 = lines[5]
-        accent = lines[6]
-        subtext = lines[8]
+        // accent2 = lines[5]
+        // accent = lines[6]
+        // subtext = lines[8]
     }
 
     property FileView _colorsFile: FileView {

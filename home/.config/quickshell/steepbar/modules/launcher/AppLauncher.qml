@@ -87,9 +87,9 @@ PanelWindow {
         anchors.fill: parent
         anchors.margins: 10
         radius: 24
-        color: "#ffffff"
+        color: Services.Colors.cardBg
         border.width: 1
-        border.color: Qt.rgba(0.75, 0.80, 0.88, 0.45)
+        border.color: Services.Colors.glassBorder
 
         // Skeuomorphic glossy reflection overlay
         Rectangle {
@@ -119,7 +119,7 @@ PanelWindow {
             radius: 23
             color: "transparent"
             border.width: 1.5
-            border.color: Qt.rgba(1, 1, 1, 0.9) // Crisp highlight edge
+            border.color: Services.Colors.innerBevel // Crisp highlight edge
         }
 
         // Main Content Layout
@@ -135,12 +135,11 @@ PanelWindow {
                 radius: 14
                 // Concave recessed gradient (darker at top, pure white at bottom)
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#e4e9f0" }
-                    GradientStop { position: 0.3; color: "#f5f7fa" }
+                    GradientStop { position: 0.0; color: "#d6e3f2" }
                     GradientStop { position: 1.0; color: "#ffffff" }
                 }
                 border.width: 1
-                border.color: "#c6d0dd"
+                border.color: Services.Colors.glassBorder
 
                 // Inner top shadow line for recessed depth
                 Rectangle {
@@ -161,7 +160,7 @@ PanelWindow {
                     Text {
                         text: "󰍉"
                         font.pixelSize: 18
-                        color: "#8392a5"
+                        color: Services.Colors.subtext
                     }
 
                     TextInput {
@@ -169,13 +168,13 @@ PanelWindow {
                         Layout.fillWidth: true
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 14
-                        color: "#1a2332"
+                        color: "#051630"
                         selectByMouse: true
 
                         Text {
                             text: "Buscar aplicación..."
                             font: parent.font
-                            color: "#8392a5"
+                            color: Services.Colors.subtext
                             visible: parent.text.length === 0
                         }
 
@@ -279,15 +278,15 @@ PanelWindow {
                                 gradient: Gradient {
                                     GradientStop { 
                                         position: 0.0 
-                                        color: appItem.isCurrent ? "#e4eaf3" : appItem.hovered ? "#ffffff" : "#ffffff" 
+                                        color: appItem.isCurrent ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : appItem.hovered ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : "#ffffff" 
                                     }
                                     GradientStop { 
                                         position: 1.0 
-                                        color: appItem.isCurrent ? "#d5dfeb" : appItem.hovered ? "#eef2f7" : "#f1f4f8" 
+                                        color: appItem.isCurrent ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : appItem.hovered ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : "#f0f4f9" 
                                     }
                                 }
                                 border.width: 1
-                                border.color: appItem.isCurrent ? Services.Colors.accent : appItem.hovered ? Qt.rgba(0.70, 0.76, 0.85, 0.8) : "#ced6e0"
+                                border.color: (appItem.isCurrent || appItem.hovered) ? Services.Colors.accent2 : Services.Colors.glassBorder
 
                                 Behavior on border.color { ColorAnimation { duration: 150 } }
 
@@ -297,7 +296,7 @@ PanelWindow {
                                     radius: 16
                                     color: "transparent"
                                     border.width: 1.5
-                                    border.color: (appItem.isCurrent || appItem.hovered) ? Services.Colors.accent : "transparent"
+                                    border.color: (appItem.isCurrent || appItem.hovered) ? Services.Colors.accent2 : "transparent"
                                     opacity: (appItem.isCurrent || appItem.hovered) ? 0.8 : 0.0
                                     Behavior on opacity { NumberAnimation { duration: 150 } }
                                 }
@@ -309,7 +308,7 @@ PanelWindow {
                                     radius: 15
                                     color: "transparent"
                                     border.width: 1
-                                    border.color: Qt.rgba(1, 1, 1, 0.8)
+                                    border.color: Services.Colors.innerBevel
                                 }
 
                                 // Glossy overlay reflection on button
@@ -338,7 +337,7 @@ PanelWindow {
                                     width: (appItem.isCurrent || appItem.hovered) ? 36 : 0
                                     height: 3
                                     radius: 1.5
-                                    color: Services.Colors.accent
+                                    color: Services.Colors.accent2
                                     Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
                                 }
 
@@ -364,7 +363,7 @@ PanelWindow {
                                         font.family: "JetBrainsMono Nerd Font"
                                         font.pixelSize: 11
                                         font.bold: true
-                                        color: appItem.isCurrent ? "#050f24" : "#2a3547"
+                                        color: appItem.isCurrent ? Services.Colors.fg : Services.Colors.subtext
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
                                     }
@@ -384,7 +383,7 @@ PanelWindow {
                     text: searchQuery.length > 0 ? "Resultados: " + launcher.filteredApps.length : "Busca entre tus aplicaciones"
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 10
-                    color: "#8392a5"
+                    color: Services.Colors.subtext
                 }
 
                 Item { Layout.fillWidth: true }
@@ -394,9 +393,9 @@ PanelWindow {
                     implicitWidth: 100
                     implicitHeight: 18
                     radius: 999
-                    color: "#f0f2f6"
+                    color: Qt.rgba(0.08, 0.14, 0.28, 0.6)
                     border.width: 1
-                    border.color: "#d1d8e2"
+                    border.color: Services.Colors.glassBorder
 
                     Text {
                         anchors.centerIn: parent
@@ -404,7 +403,7 @@ PanelWindow {
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 9
                         font.bold: true
-                        color: "#6c7a8d"
+                        color: Services.Colors.subtext
                     }
                 }
 
@@ -412,9 +411,9 @@ PanelWindow {
                     implicitWidth: 100
                     implicitHeight: 18
                     radius: 999
-                    color: "#f0f2f6"
+                    color: Qt.rgba(0.08, 0.14, 0.28, 0.6)
                     border.width: 1
-                    border.color: "#d1d8e2"
+                    border.color: Services.Colors.glassBorder
 
                     Text {
                         anchors.centerIn: parent
@@ -422,7 +421,7 @@ PanelWindow {
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 9
                         font.bold: true
-                        color: "#6c7a8d"
+                        color: Services.Colors.subtext
                     }
                 }
             }

@@ -28,9 +28,9 @@ Rectangle {
     onVisibleChanged: if (visible) scanProc.running = true
 
     radius: 14
-    color: Qt.rgba(0.957, 0.969, 1, 0.97)
+    color: Services.Colors.cardBg
     border.width: 1
-    border.color: Qt.rgba(0.784, 0.843, 0.922, 0.55)
+    border.color: Services.Colors.glassBorder
 
         ColumnLayout {
             id: list
@@ -43,7 +43,7 @@ Rectangle {
                 font.family: "JetBrainsMono Nerd Font Mono"
                 font.pixelSize: 13
                 font.bold: true
-                color: "#0d0f1c"
+                color: Services.Colors.fg
                 Layout.bottomMargin: 6
             }
 
@@ -66,8 +66,7 @@ Rectangle {
                         delegate: Rectangle {
                             Layout.fillWidth: true
                             radius: 8
-                            implicitHeight: 26
-                            color: projHover.hovered ? Qt.rgba(0.667, 0.8, 0.933, 0.12) : "transparent"
+                            color: projHover.hovered ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : "transparent"
 
                             HoverHandler { id: projHover }
                             TapHandler {
@@ -83,7 +82,7 @@ Rectangle {
                                 anchors.leftMargin: 8
                                 text: "  " + modelData.name
                                 font.pixelSize: 13
-                                color: projHover.hovered ? Services.Colors.accent : "#0d0f1c"
+                                color: projHover.hovered ? Services.Colors.accent2 : Services.Colors.fg
                             }
                         }
                     }

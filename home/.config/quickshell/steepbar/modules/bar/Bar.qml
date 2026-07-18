@@ -13,8 +13,8 @@ PanelWindow {
     anchors { top: true; left: true; right: true }
     margins { top: 4; left: 13; right: 13 }
     
-    // Reserve space only for the bar shell (40px height + 4px margin)
-    exclusiveZone: 44
+    // Reserve space only for the bar shell (44px height + 4px margin)
+    exclusiveZone: 50
     
     // Tall window size to encompass dropdowns inside the same Layer Surface
     implicitHeight: 600
@@ -22,7 +22,7 @@ PanelWindow {
     visible: Services.BarState.barVisible
 
     // Click mask: When popups are open, the whole window accepts clicks (for tap-outside-to-close).
-    // When closed, only the 40px bar shell accepts clicks (transparent areas let clicks pass through).
+    // When closed, only the 46px bar shell accepts clicks (transparent areas let clicks pass through).
     mask: Region {
         Region { item: shell }
         Region {
@@ -39,8 +39,8 @@ PanelWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 40
-        radius: 18
+        height: 46
+        radius: 22
         
         // Skeuomorphic raised vertical gradient
         gradient: Gradient {
@@ -49,22 +49,22 @@ PanelWindow {
         }
         
         border.width: 1
-        border.color: "#ced5df"
+        border.color: Services.Colors.glassBorder
 
         // Inner Bevel Highlight
         Rectangle {
             anchors.fill: parent
             anchors.margins: 1
-            radius: 17
+            radius: 21
             color: "transparent"
             border.width: 1
-            border.color: Qt.rgba(1, 1, 1, 0.95)
+            border.color: Services.Colors.innerBevel
         }
 
         // Glossy Reflection overlay
         Rectangle {
             anchors.fill: parent
-            radius: 17
+            radius: 21
             clip: true
             color: "transparent"
             Rectangle {

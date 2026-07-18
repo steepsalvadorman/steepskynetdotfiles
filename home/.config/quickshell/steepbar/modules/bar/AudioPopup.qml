@@ -14,10 +14,10 @@ Rectangle {
     radius: 18
     gradient: Gradient {
         GradientStop { position: 0.0; color: "#ffffff" }
-        GradientStop { position: 1.0; color: "#f5f7fb" }
+        GradientStop { position: 1.0; color: "#f3f6fa" }
     }
     border.width: 1
-    border.color: "#ced5df"
+    border.color: Services.Colors.glassBorder
 
     // Inner Bevel Highlight
     Rectangle {
@@ -26,7 +26,7 @@ Rectangle {
         radius: 17
         color: "transparent"
         border.width: 1
-        border.color: Qt.rgba(1, 1, 1, 0.95)
+        border.color: Services.Colors.innerBevel
     }
 
     // Glossy Reflection overlay
@@ -77,7 +77,7 @@ Rectangle {
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 13
                     font.bold: true
-                    color: "#0d0f1c"
+                    color: Services.Colors.fg
                 }
             }
 
@@ -91,7 +91,7 @@ Rectangle {
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 9
                     font.bold: true
-                    color: "#8392a5"
+                    color: Services.Colors.subtext
                 }
 
                 // List of outputs
@@ -113,11 +113,11 @@ Rectangle {
                             height: 38
                             radius: 10
                             border.width: 1
-                            border.color: sinkDelegate.isActive ? Services.Colors.accent : sinkDelegate.hovered ? "#cbd4e1" : "#e2e7ee"
+                            border.color: sinkDelegate.isActive ? Services.Colors.accent2 : sinkDelegate.hovered ? "#a3c5f5" : "#d0dfef"
                             
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: sinkDelegate.isActive ? "#f3f8fd" : "#ffffff" }
-                                GradientStop { position: 1.0; color: sinkDelegate.isActive ? "#e5f0fa" : "#f8fafc" }
+                                GradientStop { position: 0.0; color: sinkDelegate.isActive ? "#e5effa" : "#ffffff" }
+                                GradientStop { position: 1.0; color: sinkDelegate.isActive ? "#d2e5fa" : "#f6f9fc" }
                             }
 
                             HoverHandler {
@@ -157,7 +157,7 @@ Rectangle {
                                     font.family: "JetBrainsMono Nerd Font"
                                     font.pixelSize: 10
                                     font.bold: true
-                                    color: "#2a3547"
+                                    color: Services.Colors.fg
                                     elide: Text.ElideRight
                                 }
 
@@ -165,14 +165,14 @@ Rectangle {
                                 Rectangle {
                                     width: 22; height: 22; radius: 6
                                     border.width: 1
-                                    border.color: (modelData.audio && modelData.audio.muted) ? "#f5c2c2" : "#cbd4e1"
-                                    color: (modelData.audio && modelData.audio.muted) ? "#fdebeb" : "#f1f4f8"
+                                    border.color: (modelData.audio && modelData.audio.muted) ? "#a3c5f5" : "#d0dfef"
+                                    color: (modelData.audio && modelData.audio.muted) ? "#e5effa" : "#f6f9fc"
 
                                     Text {
                                         anchors.centerIn: parent
                                         text: "󰝟"
                                         font.pixelSize: 10
-                                        color: (modelData.audio && modelData.audio.muted) ? "#e74c3c" : "#7f8c8d"
+                                        color: (modelData.audio && modelData.audio.muted) ? Services.Colors.accent : Services.Colors.subtext
                                     }
 
                                     TapHandler {
@@ -195,7 +195,7 @@ Rectangle {
                                 font.family: "JetBrainsMono Nerd Font"
                                 font.pixelSize: 9
                                 font.bold: true
-                                color: "#8392a5"
+                                color: Services.Colors.subtext
                                 Layout.preferredWidth: 26
                             }
 
@@ -205,13 +205,13 @@ Rectangle {
                                 Layout.fillWidth: true
                                 height: 5
                                 radius: 2.5
-                                color: "#e2e8f0"
+                                color: "#d6e3f2"
 
                                 Rectangle {
                                     width: parent.width * (modelData.audio ? Math.min(modelData.audio.volume, 1.0) : 0)
                                     height: parent.height
                                     radius: 2.5
-                                    color: Services.Colors.accent
+                                    color: Services.Colors.accent2
                                 }
 
                                 MouseArea {
@@ -240,7 +240,7 @@ Rectangle {
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 9
                     font.bold: true
-                    color: "#8392a5"
+                    color: Services.Colors.subtext
                 }
 
                 // List of inputs
@@ -262,11 +262,11 @@ Rectangle {
                             height: 38
                             radius: 10
                             border.width: 1
-                            border.color: sourceDelegate.isActive ? Services.Colors.accent : sourceDelegate.hovered ? "#cbd4e1" : "#e2e7ee"
+                            border.color: sourceDelegate.isActive ? Services.Colors.accent2 : sourceDelegate.hovered ? "#a3c5f5" : "#d0dfef"
                             
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: sourceDelegate.isActive ? "#f3f8fd" : "#ffffff" }
-                                GradientStop { position: 1.0; color: sourceDelegate.isActive ? "#e5f0fa" : "#f8fafc" }
+                                GradientStop { position: 0.0; color: sourceDelegate.isActive ? "#e5effa" : "#ffffff" }
+                                GradientStop { position: 1.0; color: sourceDelegate.isActive ? "#d2e5fa" : "#f6f9fc" }
                             }
 
                             HoverHandler {
@@ -306,7 +306,7 @@ Rectangle {
                                     font.family: "JetBrainsMono Nerd Font"
                                     font.pixelSize: 10
                                     font.bold: true
-                                    color: "#2a3547"
+                                    color: Services.Colors.fg
                                     elide: Text.ElideRight
                                 }
 
@@ -314,14 +314,14 @@ Rectangle {
                                 Rectangle {
                                     width: 22; height: 22; radius: 6
                                     border.width: 1
-                                    border.color: (modelData.audio && modelData.audio.muted) ? "#f5c2c2" : "#cbd4e1"
-                                    color: (modelData.audio && modelData.audio.muted) ? "#fdebeb" : "#f1f4f8"
+                                    border.color: (modelData.audio && modelData.audio.muted) ? "#a3c5f5" : "#d0dfef"
+                                    color: (modelData.audio && modelData.audio.muted) ? "#e5effa" : "#f6f9fc"
 
                                     Text {
                                         anchors.centerIn: parent
                                         text: "󰍭"
                                         font.pixelSize: 10
-                                        color: (modelData.audio && modelData.audio.muted) ? "#e74c3c" : "#7f8c8d"
+                                        color: (modelData.audio && modelData.audio.muted) ? Services.Colors.accent : Services.Colors.subtext
                                     }
 
                                     TapHandler {
@@ -344,7 +344,7 @@ Rectangle {
                                 font.family: "JetBrainsMono Nerd Font"
                                 font.pixelSize: 9
                                 font.bold: true
-                                color: "#8392a5"
+                                color: Services.Colors.subtext
                                 Layout.preferredWidth: 26
                             }
 
@@ -354,13 +354,13 @@ Rectangle {
                                 Layout.fillWidth: true
                                 height: 5
                                 radius: 2.5
-                                color: "#e2e8f0"
+                                color: "#d6e3f2"
 
                                 Rectangle {
                                     width: parent.width * (modelData.audio ? Math.min(modelData.audio.volume, 1.0) : 0)
                                     height: parent.height
                                     radius: 2.5
-                                    color: Services.Colors.accent
+                                    color: Services.Colors.accent2
                                 }
 
                                 MouseArea {

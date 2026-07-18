@@ -14,12 +14,9 @@ Rectangle {
     onVisibleChanged: if (visible) Services.Notifications.markSeen()
 
     radius: 18
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#ffffff" }
-        GradientStop { position: 1.0; color: "#f5f7fb" }
-    }
+    color: Services.Colors.cardBg
     border.width: 1
-    border.color: "#ced5df"
+    border.color: Services.Colors.glassBorder
 
     // Inner Bevel Highlight
     Rectangle {
@@ -28,7 +25,7 @@ Rectangle {
         radius: 17
         color: "transparent"
         border.width: 1
-        border.color: Qt.rgba(1, 1, 1, 0.95)
+        border.color: Services.Colors.innerBevel
     }
 
     // Glossy Reflection overlay
@@ -74,12 +71,12 @@ Rectangle {
                     font.family: "JetBrainsMono Nerd Font Mono"
                     font.pixelSize: 13
                     font.bold: true
-                    color: "#0d0f1c"
+                    color: Services.Colors.fg
                 }
                 Text {
                     text: "Limpiar"
                     font.pixelSize: 11
-                    color: Services.Colors.accent
+                    color: Services.Colors.accent2
                     TapHandler { onTapped: Services.Notifications.clearAll() }
                 }
             }
@@ -100,7 +97,7 @@ Rectangle {
                         visible: Services.Notifications.history.values.length === 0
                         text: "Sin notificaciones"
                         font.pixelSize: 12
-                        color: "#9ca0a6"
+                        color: Services.Colors.subtext
                     }
 
                     Repeater {

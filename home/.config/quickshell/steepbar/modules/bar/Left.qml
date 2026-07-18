@@ -62,16 +62,16 @@ RowLayout {
                     gradient: Gradient {
                         GradientStop {
                             position: 0.0
-                            color: wsBtn.active ? "#ffffff" : wsBtn.occupied ? "#ffffff" : "transparent"
+                            color: wsBtn.active ? Services.Colors.accent : wsBtn.occupied ? "#ffffff" : "transparent"
                         }
                         GradientStop {
                             position: 1.0
-                            color: wsBtn.active ? Services.Colors.accent : wsBtn.occupied ? "#eff2f6" : "transparent"
+                            color: wsBtn.active ? Services.Colors.accent2 : wsBtn.occupied ? "#eff3f9" : "transparent"
                         }
                     }
 
                     border.width: wsBtn.active ? 1.5 : wsBtn.occupied ? 1 : 0
-                    border.color: wsBtn.active ? Services.Colors.accent : "#ced6e0"
+                    border.color: wsBtn.active ? Services.Colors.accent2 : Services.Colors.glassBorder
 
                     // Inner bevel highlight
                     Rectangle {
@@ -80,7 +80,7 @@ RowLayout {
                         radius: 999
                         color: "transparent"
                         border.width: 1
-                        border.color: wsBtn.active ? Qt.rgba(1, 1, 1, 0.8) : wsBtn.occupied ? Qt.rgba(1, 1, 1, 0.95) : "transparent"
+                        border.color: wsBtn.active ? Qt.rgba(1, 1, 1, 0.8) : wsBtn.occupied ? Services.Colors.innerBevel : "transparent"
                         visible: wsBtn.active || wsBtn.occupied
                     }
 
@@ -90,7 +90,7 @@ RowLayout {
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 11
                         font.bold: true
-                        color: wsBtn.active ? "#091224" : wsBtn.occupied ? "#2a3446" : Qt.rgba(0.05, 0.06, 0.11, 0.25)
+                        color: wsBtn.active ? "#ffffff" : wsBtn.occupied ? Services.Colors.fg : Qt.rgba(0.298, 0.388, 0.522, 0.4)
                     }
 
                     TapHandler {

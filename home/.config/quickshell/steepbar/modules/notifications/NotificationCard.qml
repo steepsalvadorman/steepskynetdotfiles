@@ -12,12 +12,9 @@ Rectangle {
     signal dismissRequested()
 
     radius: 14
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#ffffff" }
-        GradientStop { position: 1.0; color: "#f5f7fa" }
-    }
+    color: Services.Colors.cardBg
     border.width: 1
-    border.color: "#ced5df"
+    border.color: Services.Colors.glassBorder
 
     // Inner highlight bevel
     Rectangle {
@@ -26,7 +23,7 @@ Rectangle {
         radius: 13
         color: "transparent"
         border.width: 1
-        border.color: Qt.rgba(1, 1, 1, 0.9)
+        border.color: Services.Colors.innerBevel
     }
 
     implicitHeight: layout.implicitHeight + 20
@@ -34,8 +31,8 @@ Rectangle {
     readonly property color urgencyColor: notification
         ? (notification.urgency === NotificationUrgency.Critical ? Services.Colors.danger
            : notification.urgency === NotificationUrgency.Low ? Services.Colors.subtext
-           : Services.Colors.accent)
-        : Services.Colors.accent
+           : Services.Colors.accent2)
+        : Services.Colors.accent2
 
     Rectangle {
         anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
@@ -61,13 +58,13 @@ Rectangle {
                 font.family: "JetBrainsMono Nerd Font Mono"
                 font.pixelSize: 13
                 font.bold: true
-                color: "#0d0f1c"
+                color: Services.Colors.fg
                 elide: Text.ElideRight
             }
             Text {
                 text: "✕"
                 font.pixelSize: 11
-                color: "#50546e"
+                color: Services.Colors.subtext
                 TapHandler {
                     onTapped: {
                         if (root.notification) root.notification.dismiss()
@@ -84,7 +81,7 @@ Rectangle {
             textFormat: Text.RichText
             font.family: "JetBrainsMono Nerd Font Mono"
             font.pixelSize: 12
-            color: "#50546e"
+            color: Services.Colors.subtext
             wrapMode: Text.WordWrap
             maximumLineCount: 3
             elide: Text.ElideRight
@@ -98,12 +95,9 @@ Rectangle {
                 model: notification ? notification.actions : []
                 delegate: Rectangle {
                     radius: 999
-                    gradient: Gradient {
-                        GradientStop { position: 0.0; color: "#ffffff" }
-                        GradientStop { position: 1.0; color: "#eff2f6" }
-                    }
+                    color: "#f1f4f8"
                     border.width: 1
-                    border.color: "#ced6e0"
+                    border.color: Services.Colors.glassBorder
                     implicitWidth: actionLabel.implicitWidth + 16
                     implicitHeight: 22
 
@@ -112,7 +106,7 @@ Rectangle {
                         anchors.centerIn: parent
                         text: modelData.text
                         font.pixelSize: 11
-                        color: "#1a2332"
+                        color: Services.Colors.fg
                     }
                     TapHandler { onTapped: modelData.invoke() }
                 }

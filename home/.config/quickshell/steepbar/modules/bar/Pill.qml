@@ -12,7 +12,7 @@ Item {
     signal clicked()
 
     implicitWidth: row.implicitWidth + hPad * 2
-    implicitHeight: Math.max(row.implicitHeight + vPad * 2, 28)
+    implicitHeight: Math.max(row.implicitHeight + vPad * 2, 34)
 
     // Outer Shadow / Ambient occlusion (static base)
     Rectangle {
@@ -39,19 +39,17 @@ Item {
         gradient: Gradient {
             GradientStop { 
                 position: 0.0 
-                color: pressHandler.pressed ? "#dbe2eb" : hoverHandler.hovered ? "#ffffff" : "#ffffff" 
+                color: pressHandler.pressed ? "#cbdff5" : hoverHandler.hovered ? "#ffffff" : "#ffffff" 
             }
             GradientStop { 
                 position: 1.0 
-                color: pressHandler.pressed ? "#f0f4f9" : hoverHandler.hovered ? "#eff2f6" : "#f1f4f8" 
+                color: pressHandler.pressed ? "#eaf2fa" : hoverHandler.hovered ? "#e3edf8" : "#f0f4f9" 
             }
         }
 
         // Border: switches to glowing accent color on hover
         border.width: 1
-        border.color: pressHandler.pressed ? Services.Colors.accent 
-                     : hoverHandler.hovered ? Services.Colors.accent 
-                     : "#ced6e0"
+        border.color: pressHandler.pressed ? Services.Colors.accent : hoverHandler.hovered ? Services.Colors.accent2 : Services.Colors.glassBorder
 
         Behavior on border.color { ColorAnimation { duration: 150 } }
 
@@ -62,7 +60,7 @@ Item {
             radius: 999
             color: "transparent"
             border.width: 1
-            border.color: Qt.rgba(1, 1, 1, 0.85)
+            border.color: Services.Colors.innerBevel
         }
 
         // Glossy Reflection overlay (curved upper shine)

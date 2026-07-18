@@ -47,31 +47,31 @@ RowLayout {
         RowLayout {
             spacing: 4
             Image { source: Qt.resolvedUrl("../../icons/cpu.svg"); width: 15; height: 15; sourceSize: Qt.size(15, 15) }
-            Text { text: sysPill.cpu + "%"; font.pixelSize: 11; font.bold: true; color: "#1a1c2e" }
+            Text { text: sysPill.cpu + "%"; font.pixelSize: 11; font.bold: true; color: Services.Colors.fg }
         }
         // CPU Temp
         RowLayout {
             spacing: 4
             Image { source: Qt.resolvedUrl("../../icons/temp.svg"); width: 13; height: 13; sourceSize: Qt.size(13, 13) }
-            Text { text: sysPill.cpuTemp + "°"; font.pixelSize: 11; font.bold: true; color: "#dd4444" }
+            Text { text: sysPill.cpuTemp + "°"; font.pixelSize: 11; font.bold: true; color: Services.Colors.accent }
         }
         // RAM
         RowLayout {
             spacing: 4
             Image { source: Qt.resolvedUrl("../../icons/ram.svg"); width: 15; height: 15; sourceSize: Qt.size(15, 15) }
-            Text { text: sysPill.ram + "%"; font.pixelSize: 11; font.bold: true; color: "#1a1c2e" }
+            Text { text: sysPill.ram + "%"; font.pixelSize: 11; font.bold: true; color: Services.Colors.fg }
         }
         // GPU
         RowLayout {
             spacing: 4
             Image { source: Qt.resolvedUrl("../../icons/gpu.svg"); width: 15; height: 15; sourceSize: Qt.size(15, 15) }
-            Text { text: sysPill.gpu + "%"; font.pixelSize: 11; font.bold: true; color: "#1a1c2e" }
+            Text { text: sysPill.gpu + "%"; font.pixelSize: 11; font.bold: true; color: Services.Colors.fg }
         }
         // GPU Temp
         RowLayout {
             spacing: 4
             Image { source: Qt.resolvedUrl("../../icons/temp-gpu.svg"); width: 13; height: 13; sourceSize: Qt.size(13, 13) }
-            Text { text: sysPill.gpuTemp + "°"; font.pixelSize: 11; font.bold: true; color: "#c84040" }
+            Text { text: sysPill.gpuTemp + "°"; font.pixelSize: 11; font.bold: true; color: Services.Colors.accent2 }
         }
     }
 
@@ -96,7 +96,7 @@ RowLayout {
         Text {
             text: volPill.muted ? "󰝟" : volPill.volPct < 30 ? "󰕿" : volPill.volPct < 70 ? "󰖀" : "󰕾"
             font.pixelSize: 15
-            color: volPill.muted ? Services.Colors.danger : "#0d0f1c"
+            color: volPill.muted ? Services.Colors.danger : Services.Colors.fg
         }
         
         Text {
@@ -104,14 +104,14 @@ RowLayout {
             font.family: "JetBrainsMono Nerd Font"
             font.pixelSize: 11
             font.bold: true
-            color: "#0d0f1c"
+            color: Services.Colors.fg
         }
 
         // Separator
         Text {
             text: "|"
             font.pixelSize: 11
-            color: "#ced6e0"
+            color: Services.Colors.glassBorder
         }
 
         // Input Status (Microphone)
@@ -152,7 +152,7 @@ RowLayout {
         Text {
             text: netPill.netType === "wifi" ? "󰖩" : netPill.netType === "ethernet" ? "󰈀" : "󰖪"
             font.pixelSize: 15
-            color: netPill.netType === "disconnected" ? Services.Colors.danger : "#0d0f1c"
+            color: netPill.netType === "disconnected" ? Services.Colors.danger : Services.Colors.fg
         }
         
         Text {
@@ -160,7 +160,7 @@ RowLayout {
             font.family: "JetBrainsMono Nerd Font"
             font.pixelSize: 11
             font.bold: true
-            color: "#0d0f1c"
+            color: Services.Colors.fg
         }
     }
 
@@ -176,7 +176,7 @@ RowLayout {
             font.family: "JetBrainsMono Nerd Font Mono"
             font.pixelSize: 13
             font.bold: true
-            color: "#0d0f1c"
+            color: Services.Colors.fg
         }
         Text {
             text: "·"
@@ -188,7 +188,7 @@ RowLayout {
             text: Qt.formatDateTime(root.now, "ddd d MMM")
             font.family: "JetBrainsMono Nerd Font"
             font.pixelSize: 11
-            color: "#50546e"
+            color: Services.Colors.subtext
         }
     }
 
@@ -200,7 +200,7 @@ RowLayout {
         onClicked: Services.PopupState.toggleNotifCenter()
 
         readonly property int count: Services.Notifications.history ? Services.Notifications.history.values.length : 0
-        readonly property color tint: count > 5 ? Services.Colors.danger : count > 0 ? Services.Colors.warning : "#0d0f1c"
+        readonly property color tint: count > 5 ? Services.Colors.danger : count > 0 ? Services.Colors.warning : Services.Colors.fg
 
         Text { text: "󰂚"; font.pixelSize: 15; color: notifPill.tint }
         Text { visible: notifPill.count > 0; text: notifPill.count; font.pixelSize: 11; font.bold: true; color: notifPill.tint }
