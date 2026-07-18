@@ -1,0 +1,18 @@
+#!/bin/bash
+# Estado de contenedores Docker
+
+count=$(docker ps --format '{{.ID}}' 2>/dev/null | wc -l)
+icon="󰡨"
+
+if [ "$count" -gt 0 ]; then
+    color="#8ec07c"   # aqua-bright — contenedores corriendo
+else
+    color="#504945"   # gris — sin contenedores
+fi
+
+case "$1" in
+    --count) echo "$count" ;;
+    --icon)  echo "$icon" ;;
+    --color) echo "$color" ;;
+    --all)   printf '%s|%s|%s\n' "$count" "$icon" "$color" ;;
+esac

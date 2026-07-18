@@ -1,0 +1,49 @@
+#!/bin/bash
+# Emite JSON con los proyectos agrupados por lenguaje para ProjectsPopup.qml
+
+PROJECTS_DIR="$HOME/Documentos/programacion"
+
+declare -A LANG_ICONS=(
+    ["Python"]="󰌠"
+    ["rust"]="󱘗"
+    ["readme"]="󰈙"
+)
+declare -A LANG_LABELS=(
+    ["Python"]="Python"
+    ["rust"]="Rust"
+    ["readme"]="Docs"
+)
+
+first_section=true
+echo -n '['
+
+for lang_dir in "$PROJECTS_DIR"/*/; do
+    [ -d "$lang_dir" ] || continue
+    lang=$(basename "$lang_dir")
+    icon="${LANG_ICONS[$lang]:-󰉋}"
+    label="${LANG_LABELS[$lang]:-$lang}"
+
+    $first_section || echo -n ','
+    first_section=false
+
+    echo -n "{\"icon\":\"$icon\",\"label\":\"$label\",\"projects\":["
+
+    first_proj=true
+    if [ -d "${lang_dir}.git" ]; then
+        proj_path="${lang_dir%/}"
+        echo -n "{\"name\":\"$lang\",\"path\":\"$proj_path\"}"
+    else
+        for proj_dir in "${lang_dir}"*/; do
+            [ -d "$proj_dir" ] || continue
+            proj=$(basename "$proj_dir")
+            proj_path="${proj_dir%/}"
+            $first_proj || echo -n ','
+            first_proj=false
+            echo -n "{\"name\":\"$proj\",\"path\":\"$proj_path\"}"
+        done
+    fi
+
+    echo -n ']}'
+done
+
+echo ']'

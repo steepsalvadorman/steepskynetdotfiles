@@ -1,0 +1,26 @@
+#!/bin/bash
+# Network status script for steepbar
+
+# Find active physical connection (excluding bridges, loopbacks, docker interfaces)
+conn=$(nmcli -t -f NAME,TYPE,DEVICE connection show --active | grep -v -E "bridge|loopback|docker|virbr" | head -n1)
+
+if [ -z "$conn" ]; then
+    echo "disconnected|Desconectado|none"
+    exit 0
+fi
+
+# Split values
+name=$(echo "$conn" | cut -d':' -f1)
+type=$(echo "$conn" | cut -d':' -f2)
+device=$(echo "$conn" | cut -d':' -f3)
+
+if [[ "$type" == *"ethernet"* ]]; then
+    echo "ethernet|Cableada|enp"
+elif [[ "$type" == *"wireless"* || "$type" == *"wifi"* ]]; then
+    # Get signal strength if possible
+    sig=$(nmcli -f IN-USE,SIGNAL dev wifi | grep '^*' | awk '{print $2}')
+    [ -z "$sig" ] && sig="100"
+    echo "wifi|$name|$sig"
+else
+    echo "other|$name|other"
+fi

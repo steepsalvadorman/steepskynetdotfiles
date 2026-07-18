@@ -1,0 +1,5 @@
+module steepbar.services
+singleton Colors 1.0 Colors.qml
+singleton BarState 1.0 BarState.qml
+singleton Notifications 1.0 Notifications.qml
+singleton PopupState 1.0 PopupState.qml

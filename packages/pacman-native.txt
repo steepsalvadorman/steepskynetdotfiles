@@ -9,6 +9,7 @@ btop
 btrfs-progs
 cava
 chromium
+cliphist
 dart-sass
 ddcutil
 discord
@@ -28,6 +29,7 @@ gst-plugins-bad
 gst-plugins-good
 gst-plugins-ugly
 hyprland
+hyprlock
 intel-ucode
 irqbalance
 jq
@@ -61,6 +63,7 @@ power-profiles-daemon
 python-pyqt6
 python-pywal
 qt6-wayland
+quickshell
 rofi
 rust
 rust-src
@@ -70,7 +73,6 @@ slurp
 speedtest-cli
 steam
 sudo
-swaync
 thunar
 ttf-daddytime-mono-nerd
 ttf-iosevka-nerd
@@ -81,6 +83,7 @@ unzip
 uwsm
 wireplumber
 wl-clipboard
+wlogout
 wofi
 wpa_supplicant
 xdg-desktop-portal-hyprland

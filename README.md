@@ -9,11 +9,9 @@ Arch Linux desktop · Hyprland · Mirror's Edge aesthetic
 | Layer | Tool |
 |---|---|
 | Compositor | [Hyprland](https://hyprland.org) |
-| Bar | [eww](https://github.com/elkowar/eww) |
-| Projects popup | [AGS / Astal](https://aylur.github.io/astal) |
+| Bar + notifications + projects popup | [Quickshell](https://quickshell.org) |
 | Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/) |
 | Launcher | [Wofi](https://hg.sr.ht/~scoopta/wofi) |
-| Notifications | [SwayNC](https://github.com/ErikReider/SwayNotificationCenter) |
 | Theming | [pywal](https://github.com/dylanaraps/pywal) |
 | Shell | Zsh + Powerlevel10k |
 | GPU | NVIDIA (drivers + NVAPI + DXVK) |
@@ -21,16 +19,26 @@ Arch Linux desktop · Hyprland · Mirror's Edge aesthetic
 
 ## Bar widgets
 
-- Workspaces (hyprctl live listener)
+All in `~/.config/quickshell/steepbar/` (entry point `shell.qml`), launched via
+`qs -c steepbar`. Toggle the bar with `$mainMod, B` (`qs -c steepbar ipc call bar toggle`).
+
+- Workspaces (native `Quickshell.Hyprland` — reactive, no polling)
 - Clock + date
-- Music player (playerctl → Chromium/Spotify)
-- CPU · CPU temp · RAM · GPU · GPU temp
-- CAVA VU meter
-- Volume slider (wpctl)
-- Docker status (lazydocker)
-- OBS recording badge
-- Notification bell (swaync)
-- **Projects popup** — scans `~/Documentos/programacion/` by language, opens in VS Code (powered by AGS)
+- Music player (native `Quickshell.Services.Mpris`)
+- CPU · CPU temp · RAM · GPU · GPU temp (reused `scripts/sysinfo`)
+- Volume slider (native `Quickshell.Services.Pipewire`, hover-reveal)
+- Docker status (reused `scripts/docker_status`, opens lazydocker)
+- OBS recording badge (reused `scripts/obs_status`)
+- Notification bell — opens the native notification history panel
+- **Projects popup** — scans `~/Documentos/programacion/` by language, opens in VS Code
+  (`scripts/projects` + `modules/projects/ProjectsPopup.qml`)
+
+## Notifications
+
+A native `Quickshell.Services.Notifications.NotificationServer` (see
+`modules/notifications/`) replaces SwayNC entirely: toast popups top-right
+(`Popups.qml`, auto-dismiss) plus a history panel toggled from the bell
+(`NotificationCenter.qml`).
 
 ## Color theming
 
@@ -52,7 +60,7 @@ wal -i /path/to/wallpaper
 ## What is included
 
 - Shell: `.zshrc` · `.bashrc` · `.bash_profile` · `.p10k.zsh` · `.npmrc`
-- Config: Hyprland · eww · AGS · Kitty · Wofi · Cava · GTK · Thunar · OpenRGB · fontconfig · pywal templates
+- Config: Hyprland · Quickshell · Kitty · Wofi · Cava (standalone visualizer) · GTK · Thunar · OpenRGB · fontconfig · pywal templates
 - Package lists: `packages/pacman-native.txt` · `packages/aur.txt` · `packages/npm-global.txt`
 
 Browser profiles, caches, shell history, GPG/SSH keys excluded.

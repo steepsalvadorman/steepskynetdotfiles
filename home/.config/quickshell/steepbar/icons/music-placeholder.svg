@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background disc body -->
+  <circle cx="50" cy="50" r="48" fill="#0c0e14" stroke="#1d232e" stroke-width="1.5" />
+  
+  <!-- Stylized vinyl grooves -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#252d3c" stroke-width="0.8" stroke-dasharray="14 3 6 2" opacity="0.9" />
+  <circle cx="50" cy="50" r="37" fill="none" stroke="#252d3c" stroke-width="0.6" stroke-dasharray="8 4" opacity="0.8" />
+  <circle cx="50" cy="50" r="32" fill="none" stroke="#252d3c" stroke-width="0.6" opacity="0.75" />
+  <circle cx="50" cy="50" r="26" fill="none" stroke="#252d3c" stroke-width="0.5" stroke-dasharray="5 2 2 2" opacity="0.8" />
+
+  <!-- Center Label (Mirror's Edge aesthetic red circle) -->
+  <circle cx="50" cy="50" r="18" fill="#e30022" />
+  
+  <!-- Minimalist vector graphics inside the label -->
+  <polygon points="50,32 68,50 50,50" fill="#ffffff" opacity="0.9" />
+  <polygon points="32,50 50,68 50,50" fill="#0f1118" opacity="0.95" />
+  <line x1="32" y1="32" x2="68" y2="68" stroke="#ffffff" stroke-width="1.2" opacity="0.3" />
+  
+  <!-- Center Spindle hole -->
+  <circle cx="50" cy="50" r="6" fill="#0f1118" />
+  <circle cx="50" cy="50" r="3" fill="#ffffff" />
+</svg>

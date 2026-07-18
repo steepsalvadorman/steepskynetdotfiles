@@ -1,0 +1,38 @@
+#!/bin/bash
+# Info de sistema: CPU, RAM, GPU (NVIDIA via nvidia-smi)
+
+get_cpu() {
+    grep 'cpu ' /proc/stat | awk '{
+        idle=$5; total=$2+$3+$4+$5+$6+$7+$8
+        print int(100 - (idle * 100 / total))
+    }'
+}
+
+get_ram() {
+    free | awk '/Mem:/ {printf "%.0f", $3/$2*100}'
+}
+
+get_gpu() {
+    nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null \
+        | head -1 | tr -d ' ' || echo "N/A"
+}
+
+get_gputemp() {
+    nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null \
+        | head -1 | tr -d ' ' || echo "N/A"
+}
+
+get_cputemp() {
+    sensors | grep "Package id 0" | awk '{print $4}' | tr -d '+°C'
+}
+
+case "$1" in
+    --cpu) get_cpu ;;
+    --ram) get_ram ;;
+    --gpu) get_gpu ;;
+    --gputemp) get_gputemp ;;
+    --cputemp) get_cputemp ;;
+    --all)
+        printf '%s|%s|%s|%s|%s\n' "$(get_cpu)" "$(get_cputemp)" "$(get_ram)" "$(get_gpu)" "$(get_gputemp)"
+        ;;
+esac
