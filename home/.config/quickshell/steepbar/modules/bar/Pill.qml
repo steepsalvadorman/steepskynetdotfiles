@@ -43,8 +43,8 @@ Item {
         Behavior on y { NumberAnimation { duration: 60 } }
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: pressHandler.pressed ? "#d9e6f5" : "#ffffff" }
-            GradientStop { position: 1.0; color: pressHandler.pressed ? "#eef4fb" : "#e9eff7" }
+            GradientStop { position: 0.0; color: pressHandler.pressed ? Qt.darker(Services.Colors.cardBg, 1.08) : "#ffffff" }
+            GradientStop { position: 1.0; color: pressHandler.pressed ? Qt.darker(Services.Colors.cardBg, 1.02) : Services.Colors.cardBg }
         }
 
         // Tapa de vidrio

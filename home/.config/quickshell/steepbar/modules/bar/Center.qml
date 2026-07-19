@@ -41,8 +41,38 @@ RowLayout {
             antialiasing: true
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#ffffff" }
-                GradientStop { position: 0.6; color: "#f6f9fc" }
-                GradientStop { position: 1.0; color: "#e9eff7" }
+                GradientStop { position: 1.0; color: Services.Colors.cardBg }
+            }
+        }
+
+        // Waving Aurora light wave (Frutiger Aero vector wave)
+        Rectangle {
+            anchors.fill: containerBody
+            radius: 23
+            clip: true
+            color: "transparent"
+            opacity: (root.player && root.player.isPlaying) ? 0.28 : 0.0
+            Behavior on opacity { NumberAnimation { duration: 600 } }
+
+            Rectangle {
+                id: wave
+                width: parent.width * 1.5
+                height: parent.height * 2
+                anchors.verticalCenter: parent.verticalCenter
+                x: -container.width * 0.4
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop { position: 0.0; color: "transparent" }
+                    GradientStop { position: 0.5; color: Services.Colors.accent2 }
+                    GradientStop { position: 1.0; color: "transparent" }
+                }
+
+                SequentialAnimation on x {
+                    running: root.player && root.player.isPlaying
+                    loops: Animation.Infinite
+                    NumberAnimation { from: -container.width * 0.4; to: container.width * 0.4; duration: 4000; easing.type: Easing.InOutSine }
+                    NumberAnimation { from: container.width * 0.4; to: -container.width * 0.4; duration: 4000; easing.type: Easing.InOutSine }
+                }
             }
         }
 
@@ -70,31 +100,28 @@ RowLayout {
             width: 40
             height: 40
 
-            // ── Disco giratorio (rasterizado con suavizado) ──
-            Item {
-                id: spinningDisc
+            // ── Contenedor de recorte ESTÁTICO (Evita el pixelado de bordes al girar) ──
+            ClippingRectangle {
                 anchors.fill: parent
-                layer.enabled: true
-                layer.smooth: true
-                layer.mipmap: true
-                layer.textureSize: Qt.size(256, 256)
+                radius: width / 2
+                antialiasing: true
+                color: "#0d0f13"
+                border.width: 1
+                border.color: "#40454d"
 
-                RotationAnimation on rotation {
-                    from: 0
-                    to: 360
-                    duration: 6000
-                    loops: Animation.Infinite
-                    running: root.player && root.player.isPlaying
-                }
-
-                // Carátula a disco completo, recorte circular nativo
-                ClippingRectangle {
+                // ── Disco giratorio interno ──
+                Item {
+                    id: spinningDisc
                     anchors.fill: parent
-                    radius: width / 2
                     antialiasing: true
-                    color: "#0d0f13"
-                    border.width: 1
-                    border.color: "#40454d"
+
+                    RotationAnimation on rotation {
+                        from: 0
+                        to: 360
+                        duration: 6000
+                        loops: Animation.Infinite
+                        running: root.player && root.player.isPlaying
+                    }
 
                     Image {
                         anchors.fill: parent
@@ -104,54 +131,55 @@ RowLayout {
                             : Qt.resolvedUrl("../../icons/music-placeholder.svg")
                         smooth: true
                         mipmap: true
-                        sourceSize: Qt.size(256, 256)
+                        antialiasing: true
+                        sourceSize: Qt.size(128, 128)
                     }
-                }
 
-                // Viñeta de borde: hunde el arte hacia el canto del disco
-                Rectangle {
-                    anchors.fill: parent
-                    radius: width / 2
-                    antialiasing: true
-                    color: "transparent"
-                    border.width: 3
-                    border.color: Qt.rgba(0, 0, 0, 0.28)
-                }
-
-                // Surcos del vinilo sobre el arte
-                Repeater {
-                    model: [36, 32, 28]
-                    delegate: Rectangle {
-                        required property int modelData
-                        anchors.centerIn: parent
-                        width: modelData
-                        height: modelData
-                        radius: modelData / 2
+                    // Viñeta de borde: hunde el arte hacia el canto del disco
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
                         antialiasing: true
                         color: "transparent"
-                        border.width: 1
-                        border.color: Qt.rgba(0, 0, 0, 0.16)
+                        border.width: 3
+                        border.color: Qt.rgba(0, 0, 0, 0.28)
                     }
-                }
 
-                // Eje central: etiqueta mínima + agujero
-                Rectangle {
-                    anchors.centerIn: parent
-                    width: 8
-                    height: 8
-                    radius: 4
-                    antialiasing: true
-                    color: "#10131a"
-                    border.width: 1
-                    border.color: Qt.rgba(1, 1, 1, 0.35)
-                }
-                Rectangle {
-                    anchors.centerIn: parent
-                    width: 2.5
-                    height: 2.5
-                    radius: 1.25
-                    antialiasing: true
-                    color: "#e8ecf2"
+                    // Surcos del vinilo sobre el arte
+                    Repeater {
+                        model: [36, 32, 28]
+                        delegate: Rectangle {
+                            required property int modelData
+                            anchors.centerIn: parent
+                            width: modelData
+                            height: modelData
+                            radius: modelData / 2
+                            antialiasing: true
+                            color: "transparent"
+                            border.width: 1
+                            border.color: Qt.rgba(0, 0, 0, 0.16)
+                        }
+                    }
+
+                    // Eje central: etiqueta mínima + agujero
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: 8
+                        height: 8
+                        radius: 4
+                        antialiasing: true
+                        color: "#10131a"
+                        border.width: 1
+                        border.color: Qt.rgba(1, 1, 1, 0.35)
+                    }
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: 2.5
+                        height: 2.5
+                        radius: 1.25
+                        antialiasing: true
+                        color: "#e8ecf2"
+                    }
                 }
             }
 

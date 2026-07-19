@@ -9,21 +9,21 @@ import Quickshell.Io
 QtObject {
     id: root
 
-    property color bg: "#ebf2f6fa"
-    property color fg: "#051630"
-    property color accent: "#0052cc"
-    property color accent2: "#00b3ff"
-    property color subtext: "#4c6385"
+    property color bg: "#eef5f3eb"              // Warm Alabaster Frosted Glass (milk glass)
+    property color fg: "#1e2a3b"              // Deep Charcoal Slate (softer than black)
+    property color accent: "#0a6cff"          // Warm Cerulean Blue
+    property color accent2: "#38b6ff"         // Soft Sky Blue
+    property color subtext: "#5a687a"         // Muted Slate Grey
 
     // Fixed semantic colors carried over from the old alerts/docker scripts.
-    readonly property color danger: "#ff3b30"   // macOS Candy Red
-    readonly property color warning: "#ff9f0a"  // macOS Candy Orange
-    readonly property color idle: "#7e8e9f"     // Skeuomorphic Muted Slate
-    readonly property color success: "#28cd41"  // macOS Candy Green
+    readonly property color danger: "#ff453a"   // Warm Coral Red
+    readonly property color warning: "#ffa62b"  // Golden Honey/Amber
+    readonly property color idle: "#8e9fa7"     // Soft Muted Slate
+    readonly property color success: "#34c759"  // Warm Grass Green
 
-    property color cardBg: "#f2f8fcff"
-    property color glassBorder: "#b5cce8"
-    property color innerBevel: "#f2ffffff"
+    property color cardBg: "#faf8f2ff"          // Ivory/Warm Cream dropdown card
+    property color glassBorder: "#c7beaf"       // Soft Sand-grey border
+    property color innerBevel: "#ffffff"        // Pure white reflection highlight
 
     // Tipografía de sistema: Adwaita Sans (derivada de Inter, instalada
     // de fábrica). Los glifos de iconos Nerd llegan por fallback de

@@ -95,7 +95,10 @@ Rectangle {
                 model: notification ? notification.actions : []
                 delegate: Rectangle {
                     radius: 999
-                    color: "#f1f4f8"
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#ffffff" }
+                        GradientStop { position: 1.0; color: Services.Colors.cardBg }
+                    }
                     border.width: 1
                     border.color: Services.Colors.glassBorder
                     implicitWidth: actionLabel.implicitWidth + 16

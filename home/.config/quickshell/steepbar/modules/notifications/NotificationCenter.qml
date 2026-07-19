@@ -14,7 +14,10 @@ Rectangle {
     onVisibleChanged: if (visible) Services.Notifications.markSeen()
 
     radius: 18
-    color: Services.Colors.cardBg
+    gradient: Gradient {
+        GradientStop { position: 0.0; color: "#ffffff" }
+        GradientStop { position: 1.0; color: Services.Colors.cardBg }
+    }
     border.width: 1
     border.color: Services.Colors.glassBorder
 

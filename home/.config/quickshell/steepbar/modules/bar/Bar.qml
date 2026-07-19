@@ -46,12 +46,12 @@ PanelWindow {
         
         // Skeuomorphic raised vertical gradient
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#ffffff" }
-            GradientStop { position: 1.0; color: "#e9eef6" }
+            GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.93) }
+            GradientStop { position: 1.0; color: Services.Colors.bg }
         }
-        
+
         border.width: 1
-        border.color: Qt.rgba(0.71, 0.80, 0.91, 0.50)
+        border.color: Services.Colors.glassBorder
 
         // Inner Bevel Highlight
         Rectangle {

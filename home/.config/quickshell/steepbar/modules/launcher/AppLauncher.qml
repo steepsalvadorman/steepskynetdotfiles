@@ -87,7 +87,10 @@ PanelWindow {
         anchors.fill: parent
         anchors.margins: 10
         radius: 24
-        color: Services.Colors.cardBg
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#ffffff" }
+            GradientStop { position: 1.0; color: Services.Colors.cardBg }
+        }
         border.width: 1
         border.color: Services.Colors.glassBorder
 
@@ -135,7 +138,7 @@ PanelWindow {
                 radius: 14
                 // Concave recessed gradient (darker at top, pure white at bottom)
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#d6e3f2" }
+                    GradientStop { position: 0.0; color: Qt.darker(Services.Colors.cardBg, 1.08) }
                     GradientStop { position: 1.0; color: "#ffffff" }
                 }
                 border.width: 1
@@ -168,7 +171,7 @@ PanelWindow {
                         Layout.fillWidth: true
                         font.family: Services.Colors.uiFont
                         font.pixelSize: 14
-                        color: "#051630"
+                        color: Services.Colors.fg
                         selectByMouse: true
 
                         Text {
@@ -278,11 +281,11 @@ PanelWindow {
                                 gradient: Gradient {
                                     GradientStop { 
                                         position: 0.0 
-                                        color: appItem.isCurrent ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : appItem.hovered ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : "#ffffff" 
+                                        color: appItem.isCurrent ? Qt.rgba(Services.Colors.accent.r, Services.Colors.accent.g, Services.Colors.accent.b, 0.08) : appItem.hovered ? Qt.rgba(Services.Colors.accent.r, Services.Colors.accent.g, Services.Colors.accent.b, 0.08) : "#ffffff" 
                                     }
                                     GradientStop { 
                                         position: 1.0 
-                                        color: appItem.isCurrent ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : appItem.hovered ? Qt.rgba(0.0, 0.52, 0.8, 0.1) : "#f0f4f9" 
+                                        color: appItem.isCurrent ? Qt.rgba(Services.Colors.accent.r, Services.Colors.accent.g, Services.Colors.accent.b, 0.08) : appItem.hovered ? Qt.rgba(Services.Colors.accent.r, Services.Colors.accent.g, Services.Colors.accent.b, 0.08) : Services.Colors.cardBg 
                                     }
                                 }
                                 border.width: 1
@@ -395,7 +398,7 @@ PanelWindow {
                     radius: 999
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "#ffffff" }
-                        GradientStop { position: 1.0; color: "#eef3f9" }
+                        GradientStop { position: 1.0; color: Services.Colors.cardBg }
                     }
                     border.width: 1
                     border.color: Services.Colors.glassBorder
@@ -416,7 +419,7 @@ PanelWindow {
                     radius: 999
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "#ffffff" }
-                        GradientStop { position: 1.0; color: "#eef3f9" }
+                        GradientStop { position: 1.0; color: Services.Colors.cardBg }
                     }
                     border.width: 1
                     border.color: Services.Colors.glassBorder
