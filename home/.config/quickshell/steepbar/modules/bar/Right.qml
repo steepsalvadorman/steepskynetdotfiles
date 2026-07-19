@@ -243,4 +243,45 @@ RowLayout {
             onTapped: Services.PopupState.toggleNotifCenter()
         }
     }
+
+    // ── Apagado/Power: Botón Circular Orbe ──────────────────
+    Item {
+        id: powerButton
+        width: 30
+        height: 30
+
+        // Sombra de contacto
+        Rectangle {
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: 2
+            width: parent.width
+            height: parent.height - 1
+            radius: 999
+            antialiasing: true
+            color: Qt.rgba(0.07, 0.13, 0.24, 0.14)
+        }
+
+        IconOrb {
+            id: powerOrb
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            glyph: "󰐥"
+            glyphSize: 14
+            tint: powerPressHandler.pressed ? Qt.darker(Services.Colors.danger, 1.1)
+                : powerHoverHandler.hovered ? Qt.lighter(Services.Colors.danger, 1.1)
+                : Services.Colors.danger
+            colored: true
+            glyphColor: "#ffffff"
+            scale: powerPressHandler.pressed ? 0.94 : (powerHoverHandler.hovered ? 1.04 : 1.0)
+            Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutQuad } }
+        }
+
+        HoverHandler { id: powerHoverHandler }
+        TapHandler {
+            id: powerPressHandler
+            onTapped: Quickshell.execDetached(["wlogout", "-b", "6", "-T", "600", "-B", "600", "-L", "800", "-R", "800"])
+        }
+    }
 }
+
