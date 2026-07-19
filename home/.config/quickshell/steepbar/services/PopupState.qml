@@ -9,41 +9,44 @@ QtObject {
     property bool notifCenterVisible: false
     property bool launcherVisible: false
     property bool audioVisible: false
+    property bool systemVisible: false
+
+    function _closeAll() {
+        projectsVisible = false
+        notifCenterVisible = false
+        launcherVisible = false
+        audioVisible = false
+        systemVisible = false
+    }
 
     function toggleProjects() {
-        projectsVisible = !projectsVisible
-        if (projectsVisible) {
-            notifCenterVisible = false
-            launcherVisible = false
-            audioVisible = false
-        }
+        const next = !projectsVisible
+        _closeAll()
+        projectsVisible = next
     }
 
     function toggleNotifCenter() {
-        notifCenterVisible = !notifCenterVisible
-        if (notifCenterVisible) {
-            projectsVisible = false
-            launcherVisible = false
-            audioVisible = false
-        }
+        const next = !notifCenterVisible
+        _closeAll()
+        notifCenterVisible = next
     }
 
     function toggleLauncher() {
-        launcherVisible = !launcherVisible
-        if (launcherVisible) {
-            projectsVisible = false
-            notifCenterVisible = false
-            audioVisible = false
-        }
+        const next = !launcherVisible
+        _closeAll()
+        launcherVisible = next
     }
 
     function toggleAudio() {
-        audioVisible = !audioVisible
-        if (audioVisible) {
-            projectsVisible = false
-            notifCenterVisible = false
-            launcherVisible = false
-        }
+        const next = !audioVisible
+        _closeAll()
+        audioVisible = next
+    }
+
+    function toggleSystem() {
+        const next = !systemVisible
+        _closeAll()
+        systemVisible = next
     }
 }
 

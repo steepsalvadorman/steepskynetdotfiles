@@ -1,143 +1,182 @@
 import QtQuick
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
+import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import "../../services" as Services
 
 RowLayout {
     id: root
-    spacing: 0
+    spacing: 8
 
     readonly property MprisPlayer player: {
         const players = Mpris.players.values
         return players.find(p => p.isPlaying) ?? players[0] ?? null
     }
 
+    // (El reloj vive en Right.qml junto a la campana — no duplicar aquí.)
+
     // Custom Glassmorphic Music Pill (40px tall and wider)
-    Rectangle {
+    Item {
         id: container
-        implicitWidth: 320
-        implicitHeight: 40
-        radius: 20
+        implicitWidth: 344
+        implicitHeight: 46
 
-        // Theme colors matching the Blue & White Mirror's Edge aesthetic
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#ffffff" }
-            GradientStop { position: 1.0; color: "#f0f4f9" }
-        }
-        border.width: 1
-        border.color: Services.Colors.glassBorder
-
-        // Inner Bevel Highlight
+        // Sombra de contacto: asienta el módulo sobre el vidrio sin contorno
         Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            radius: 19
-            color: "transparent"
-            border.width: 1
-            border.color: Services.Colors.innerBevel
-        }
-
-        // Ambient Bottom Accent Glow Line
-        Rectangle {
-            anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width - 24
+            y: 2.5
+            width: parent.width
+            height: parent.height - 2
+            radius: 23
+            antialiasing: true
+            color: Qt.rgba(0.07, 0.13, 0.24, 0.13)
+        }
+
+        // Cuerpo elevado, sin borde: solo luz
+        Rectangle {
+            id: containerBody
+            width: parent.width
+            height: parent.height - 1.5
+            radius: 23
+            antialiasing: true
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#ffffff" }
+                GradientStop { position: 0.6; color: "#f6f9fc" }
+                GradientStop { position: 1.0; color: "#e9eff7" }
+            }
+        }
+
+        // Línea de acento inferior, dentro del cuerpo elevado
+        Rectangle {
+            anchors.bottom: containerBody.bottom
+            anchors.bottomMargin: 1
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 28
             height: 1.5
             radius: 1
             color: Services.Colors.accent2
+            opacity: 0.8
         }
 
-        // 1. Large Vinyl Record Player (Left-aligned, flush to the corner)
-        Rectangle {
+        // 1. Vinyl Record — "picture disc": la carátula ocupa TODO el
+        // disco, pegado al borde izquierdo del contenedor. Solo el disco
+        // rota; el brillo especular es ESTÁTICO encima (Apple aqua).
+        // layer.smooth + mipmap eliminan el pixelado al escalar.
+        Item {
             id: vinylRecord
             anchors.left: parent.left
-            anchors.leftMargin: 4
+            anchors.leftMargin: 3
             anchors.verticalCenter: parent.verticalCenter
-            width: 34
-            height: 34
-            radius: 17
-            color: "#0b0c10"
-            border.width: 1
-            border.color: Qt.rgba(0.2, 0.35, 0.55, 0.2)
+            width: 40
+            height: 40
 
-            // Force high-resolution layer buffer to prevent pixelation on High-DPI screens
-            layer.enabled: true
-            layer.textureSize: Qt.size(256, 256)
-
-            // Vinyl Grooves (skeuomorphic rings)
-            Rectangle {
-                anchors.centerIn: parent
-                width: 28
-                height: 28
-                radius: 14
-                color: "transparent"
-                border.width: 0.75
-                border.color: Qt.rgba(255, 255, 255, 0.08)
-            }
-            Rectangle {
-                anchors.centerIn: parent
-                width: 22
-                height: 22
-                radius: 11
-                color: "transparent"
-                border.width: 0.75
-                border.color: Qt.rgba(255, 255, 255, 0.05)
-            }
-
-            // Center Album Art Label (Enlarged and masked with OpacityMask for perfect anti-aliased roundness!)
+            // ── Disco giratorio (rasterizado con suavizado) ──
             Item {
-                id: labelWrapper
-                anchors.centerIn: parent
-                width: 20
-                height: 20
+                id: spinningDisc
+                anchors.fill: parent
+                layer.enabled: true
+                layer.smooth: true
+                layer.mipmap: true
+                layer.textureSize: Qt.size(256, 256)
 
-                Image {
-                    id: albumArt
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectCrop
-                    source: (root.player && root.player.trackArtUrl)
-                        ? root.player.trackArtUrl
-                        : Qt.resolvedUrl("../../icons/music-placeholder.svg")
-                    visible: false // Hidden because OpacityMask draws it
-                    smooth: true
-                    mipmap: true
-                    sourceSize: Qt.size(120, 120)
+                RotationAnimation on rotation {
+                    from: 0
+                    to: 360
+                    duration: 6000
+                    loops: Animation.Infinite
+                    running: root.player && root.player.isPlaying
                 }
 
+                // Carátula a disco completo, recorte circular nativo
+                ClippingRectangle {
+                    anchors.fill: parent
+                    radius: width / 2
+                    antialiasing: true
+                    color: "#0d0f13"
+                    border.width: 1
+                    border.color: "#40454d"
+
+                    Image {
+                        anchors.fill: parent
+                        fillMode: Image.PreserveAspectCrop
+                        source: (root.player && root.player.trackArtUrl)
+                            ? root.player.trackArtUrl
+                            : Qt.resolvedUrl("../../icons/music-placeholder.svg")
+                        smooth: true
+                        mipmap: true
+                        sourceSize: Qt.size(256, 256)
+                    }
+                }
+
+                // Viñeta de borde: hunde el arte hacia el canto del disco
                 Rectangle {
-                    id: albumMask
                     anchors.fill: parent
-                    radius: 10
-                    color: "black"
-                    visible: false // Hidden because OpacityMask uses it as mask
-                    smooth: true
+                    radius: width / 2
+                    antialiasing: true
+                    color: "transparent"
+                    border.width: 3
+                    border.color: Qt.rgba(0, 0, 0, 0.28)
                 }
 
-                OpacityMask {
-                    anchors.fill: parent
-                    source: albumArt
-                    maskSource: albumMask
-                    smooth: true
+                // Surcos del vinilo sobre el arte
+                Repeater {
+                    model: [36, 32, 28]
+                    delegate: Rectangle {
+                        required property int modelData
+                        anchors.centerIn: parent
+                        width: modelData
+                        height: modelData
+                        radius: modelData / 2
+                        antialiasing: true
+                        color: "transparent"
+                        border.width: 1
+                        border.color: Qt.rgba(0, 0, 0, 0.16)
+                    }
+                }
+
+                // Eje central: etiqueta mínima + agujero
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 8
+                    height: 8
+                    radius: 4
+                    antialiasing: true
+                    color: "#10131a"
+                    border.width: 1
+                    border.color: Qt.rgba(1, 1, 1, 0.35)
+                }
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 2.5
+                    height: 2.5
+                    radius: 1.25
+                    antialiasing: true
+                    color: "#e8ecf2"
                 }
             }
 
-            // Spindle Center Hole
+            // ── Capa de vidrio estática (Apple aqua: la luz no rota) ──
             Rectangle {
-                anchors.centerIn: parent
-                width: 3
-                height: 3
-                radius: 1.5
-                color: "#ffffff"
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: 2
+                width: parent.width - 10
+                height: parent.height * 0.42
+                radius: height / 2
+                antialiasing: true
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.50) }
+                    GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.02) }
+                }
             }
 
-            // Spin animation of the entire vinyl record
-            RotationAnimation on rotation {
-                from: 0
-                to: 360
-                duration: 6000  // Realistic rotation speed
-                loops: Animation.Infinite
-                running: root.player && root.player.isPlaying
+            // Luz de borde (rim light) que sella el efecto de cristal
+            Rectangle {
+                anchors.fill: parent
+                radius: width / 2
+                antialiasing: true
+                color: "transparent"
+                border.width: 1
+                border.color: Qt.rgba(1, 1, 1, 0.28)
             }
         }
 
@@ -154,17 +193,20 @@ RowLayout {
             Text {
                 Layout.fillWidth: true
                 text: (root.player && root.player.trackTitle) ? root.player.trackTitle : "Sin reproducción"
-                font.family: "JetBrainsMono Nerd Font Mono"
-                font.pixelSize: 12
-                font.bold: true
+                font.family: Services.Colors.uiFont
+                font.pixelSize: 13
+                font.weight: Font.DemiBold
                 color: Services.Colors.fg
                 elide: Text.ElideRight
+                style: Text.Sunken
+                styleColor: Qt.rgba(1, 1, 1, 0.80)
             }
             Text {
                 Layout.fillWidth: true
                 text: (root.player && root.player.trackArtist) ? root.player.trackArtist : "Desconocido"
-                font.family: "JetBrainsMono Nerd Font Mono"
-                font.pixelSize: 10
+                font.family: Services.Colors.uiFont
+                font.pixelSize: 11
+                font.weight: Font.Medium
                 color: Services.Colors.subtext
                 elide: Text.ElideRight
             }
@@ -182,23 +224,47 @@ RowLayout {
             Text {
                 id: prevBtn
                 text: "󰒮"
-                font.pixelSize: 13
+                font.pixelSize: 14
                 color: prevHover.hovered ? Services.Colors.accent2 : Services.Colors.subtext
                 Behavior on color { ColorAnimation { duration: 100 } }
                 HoverHandler { id: prevHover }
                 TapHandler { onTapped: root.player && root.player.canSeek && root.player.seek(-5) }
             }
 
-            // Play/Pause Circular Button (Slightly larger, better targets)
+            // Play/Pause — esfera glossy estilo Apple aqua: gradiente
+            // vertical + destello superior estático + borde oscurecido.
             Rectangle {
                 id: playBtn
-                width: 26
-                height: 26
-                radius: 13
-                color: playHover.hovered ? Services.Colors.accent2 : Services.Colors.accent
+                width: 28
+                height: 28
+                radius: 14
+                antialiasing: true
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: playHover.hovered ? Qt.lighter(Services.Colors.accent2, 1.35) : Qt.lighter(Services.Colors.accent, 1.40)
+                    }
+                    GradientStop {
+                        position: 1.0
+                        color: playHover.hovered ? Services.Colors.accent2 : Services.Colors.accent
+                    }
+                }
                 border.width: 1
-                border.color: Services.Colors.innerBevel
-                Behavior on color { ColorAnimation { duration: 120 } }
+                border.color: Qt.darker(Services.Colors.accent, 1.30)
+
+                // Destello de vidrio superior
+                Rectangle {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y: 1.5
+                    width: parent.width - 8
+                    height: parent.height * 0.42
+                    radius: height / 2
+                    antialiasing: true
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.65) }
+                        GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.05) }
+                    }
+                }
 
                 Text {
                     anchors.centerIn: parent
@@ -217,7 +283,7 @@ RowLayout {
             Text {
                 id: nextBtn
                 text: "󰒭"
-                font.pixelSize: 13
+                font.pixelSize: 14
                 color: nextHover.hovered ? Services.Colors.accent2 : Services.Colors.subtext
                 Behavior on color { ColorAnimation { duration: 100 } }
                 HoverHandler { id: nextHover }

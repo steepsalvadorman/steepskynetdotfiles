@@ -2,6 +2,10 @@ import QtQuick
 import QtQuick.Layouts
 import "../../services" as Services
 
+// Zona de la barra SIN contorno. La información pasiva vive desnuda sobre
+// el vidrio; las zonas interactivas se "materializan" al hover: emerge una
+// superficie aqua (gradiente + tapa de vidrio + sombra de contacto) con
+// fundido — relieve hecho de luz, nunca de líneas.
 Item {
     id: root
     default property alias content: row.data
@@ -12,92 +16,58 @@ Item {
     signal clicked()
 
     implicitWidth: row.implicitWidth + hPad * 2
-    implicitHeight: Math.max(row.implicitHeight + vPad * 2, 34)
+    implicitHeight: Math.max(row.implicitHeight + vPad * 2, 38)
 
-    // Outer Shadow / Ambient occlusion (static base)
+    readonly property bool _lit: root.interactive && (hoverHandler.hovered || pressHandler.pressed)
+
+    // Sombra de contacto (halo suave, sin anillo)
     Rectangle {
         anchors.fill: parent
-        anchors.topMargin: 2.5
+        anchors.topMargin: 2
         radius: 999
-        color: "transparent"
-        border.width: 1
-        border.color: Qt.rgba(0.08, 0.15, 0.25, 0.08)
+        color: Qt.rgba(0.07, 0.13, 0.24, 0.10)
+        opacity: root._lit ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: 160 } }
     }
 
-    // Interactive Floating Button Base (Skeuomorphic Relief)
+    // Superficie que emerge al hover
     Rectangle {
         id: buttonBase
         width: parent.width
-        height: parent.height - 1.5
-        // Tactile depth offset: button goes down when pressed/hovered
-        y: pressHandler.pressed ? 1.5 : hoverHandler.hovered ? 0.0 : 0.8
+        height: parent.height - 1
+        y: pressHandler.pressed ? 1 : 0
         radius: 999
-
+        antialiasing: true
+        opacity: root._lit ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: 160 } }
         Behavior on y { NumberAnimation { duration: 60 } }
 
-        // Skeuomorphic vertical gradient (raised look)
         gradient: Gradient {
-            GradientStop { 
-                position: 0.0 
-                color: pressHandler.pressed ? "#cbdff5" : hoverHandler.hovered ? "#ffffff" : "#ffffff" 
-            }
-            GradientStop { 
-                position: 1.0 
-                color: pressHandler.pressed ? "#eaf2fa" : hoverHandler.hovered ? "#e3edf8" : "#f0f4f9" 
-            }
+            GradientStop { position: 0.0; color: pressHandler.pressed ? "#d9e6f5" : "#ffffff" }
+            GradientStop { position: 1.0; color: pressHandler.pressed ? "#eef4fb" : "#e9eff7" }
         }
 
-        // Border: switches to glowing accent color on hover
-        border.width: 1
-        border.color: pressHandler.pressed ? Services.Colors.accent : hoverHandler.hovered ? Services.Colors.accent2 : Services.Colors.glassBorder
-
-        Behavior on border.color { ColorAnimation { duration: 150 } }
-
-        // Inner Bevel Highlight (light catching the top edge)
+        // Tapa de vidrio
         Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            radius: 999
-            color: "transparent"
-            border.width: 1
-            border.color: Services.Colors.innerBevel
-        }
-
-        // Glossy Reflection overlay (curved upper shine)
-        Rectangle {
-            anchors.fill: parent
-            radius: 999
-            clip: true
-            color: "transparent"
-            Rectangle {
-                width: parent.width * 1.5
-                height: parent.height / 1.8
-                rotation: -3
-                x: -10
-                y: -3
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.38) }
-                    GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.0) }
-                }
-            }
-        }
-
-        // LED / Active Neon accent line (glow indicator on active/hovered)
-        Rectangle {
-            anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            width: hoverHandler.hovered ? Math.min(parent.width * 0.4, 30) : 0
-            height: 2
-            radius: 1
-            color: Services.Colors.accent
-            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+            y: 1.5
+            width: parent.width - 10
+            height: parent.height * 0.46
+            radius: height / 2
+            antialiasing: true
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.60) }
+                GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.03) }
+            }
         }
+    }
 
-        RowLayout {
-            id: row
-            anchors.centerIn: parent
-            spacing: 6
-        }
+    RowLayout {
+        id: row
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: pressHandler.pressed ? 1 : 0
+        spacing: 6
+        Behavior on anchors.verticalCenterOffset { NumberAnimation { duration: 60 } }
     }
 
     HoverHandler { id: hoverHandler }
@@ -107,4 +77,3 @@ Item {
         onTapped: root.clicked()
     }
 }
-

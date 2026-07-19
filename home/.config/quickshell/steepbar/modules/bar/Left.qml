@@ -8,17 +8,47 @@ RowLayout {
     id: root
     spacing: 8
 
-    // App Launcher Toggle Button (Skeuomorphic White Pill)
-    Pill {
-        hPad: 8
-        vPad: 4
-        onClicked: Services.PopupState.toggleLauncher()
+    // App Launcher Toggle Button (Circular White Orb)
+    Item {
+        id: launcherBtn
+        width: 30
+        height: 30
 
-        Image {
-            source: Qt.resolvedUrl("../../icons/archlinux.svg")
-            width: 20
-            height: 20
-            sourceSize: Qt.size(20, 20)
+        // Sombra de contacto
+        Rectangle {
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: 2
+            width: parent.width
+            height: parent.height - 1
+            radius: 999
+            antialiasing: true
+            color: Qt.rgba(0.07, 0.13, 0.24, 0.14)
+            visible: true
+        }
+
+        IconOrb {
+            id: launcherOrb
+            anchors.fill: parent
+            tint: pressHandler.pressed ? Qt.darker("#ffffff", 1.08)
+                : hoverHandler.hovered ? Qt.lighter("#ffffff", 1.04)
+                : "#ffffff"
+            scale: pressHandler.pressed ? 0.94 : (hoverHandler.hovered ? 1.04 : 1.0)
+            Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutQuad } }
+
+            Image {
+                anchors.centerIn: parent
+                source: Qt.resolvedUrl("../../icons/archlinux.svg")
+                width: 16
+                height: 16
+                sourceSize: Qt.size(16, 16)
+                opacity: 0.95
+            }
+        }
+
+        HoverHandler { id: hoverHandler }
+        TapHandler {
+            id: pressHandler
+            onTapped: Services.PopupState.toggleLauncher()
         }
     }
 
@@ -35,65 +65,90 @@ RowLayout {
                 readonly property bool active: Hyprland.focusedWorkspace !== null && Hyprland.focusedWorkspace.id === modelData
                 readonly property bool occupied: Hyprland.workspaces.values.some(w => w.id === modelData)
 
-                width: 26
-                height: 26
+                width: 30
+                height: 30
 
-                // Ambient shadow for depth
+                // Sombra de contacto (solo bajo esferas materializadas)
                 Rectangle {
-                    anchors.fill: parent
-                    anchors.topMargin: 1.5
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y: 2
+                    width: parent.width
+                    height: parent.height - 1
                     radius: 999
-                    color: "transparent"
-                    border.width: 1
-                    border.color: wsBtn.active ? Qt.rgba(0, 0, 0, 0.12) : wsBtn.occupied ? Qt.rgba(0, 0, 0, 0.06) : "transparent"
+                    antialiasing: true
+                    color: Qt.rgba(0.07, 0.13, 0.24, 0.14)
+                    visible: wsBtn.active || wsBtn.occupied
                 }
 
-                // Raised Button Base
+                // Esfera sin contorno: volumen por gradiente de tres paradas
                 Rectangle {
                     id: btnBase
                     width: parent.width
                     height: parent.height - 1
-                    y: wsBtn.active ? 1.0 : wsBtn.occupied ? 0.0 : 0.8
                     radius: 999
+                    antialiasing: true
 
-                    // Smooth transition on hover/active states
-                    Behavior on y { NumberAnimation { duration: 60 } }
+                    scale: wsPress.pressed ? 0.94 : (wsHover.hovered ? 1.04 : 1.0)
+                    Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutQuad } }
 
                     gradient: Gradient {
                         GradientStop {
                             position: 0.0
-                            color: wsBtn.active ? Services.Colors.accent : wsBtn.occupied ? "#ffffff" : "transparent"
+                            color: wsBtn.active ? Qt.lighter(Services.Colors.accent, 1.35) : wsBtn.occupied ? "#ffffff" : "transparent"
+                        }
+                        GradientStop {
+                            position: 0.55
+                            color: wsBtn.active ? Services.Colors.accent : wsBtn.occupied ? "#f4f7fb" : "transparent"
                         }
                         GradientStop {
                             position: 1.0
-                            color: wsBtn.active ? Services.Colors.accent2 : wsBtn.occupied ? "#eff3f9" : "transparent"
+                            color: wsBtn.active ? Qt.darker(Services.Colors.accent, 1.20) : wsBtn.occupied ? "#e8eef6" : "transparent"
                         }
                     }
 
-                    border.width: wsBtn.active ? 1.5 : wsBtn.occupied ? 1 : 0
-                    border.color: wsBtn.active ? Services.Colors.accent2 : Services.Colors.glassBorder
-
-                    // Inner bevel highlight
+                    // Tapa de vidrio (solo esferas visibles)
                     Rectangle {
-                        anchors.fill: parent
-                        anchors.margins: 1
-                        radius: 999
-                        color: "transparent"
-                        border.width: 1
-                        border.color: wsBtn.active ? Qt.rgba(1, 1, 1, 0.8) : wsBtn.occupied ? Services.Colors.innerBevel : "transparent"
                         visible: wsBtn.active || wsBtn.occupied
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: 1
+                        width: parent.width - 8
+                        height: parent.height * 0.46
+                        radius: height / 2
+                        antialiasing: true
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.65) }
+                            GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.04) }
+                        }
+                    }
+
+                    // Reflejo secundario inferior (brillo de rebote ambiental Frutiger Aero)
+                    Rectangle {
+                        visible: wsBtn.active || wsBtn.occupied
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 2
+                        width: parent.width - 10
+                        height: parent.height * 0.16
+                        radius: height / 2
+                        antialiasing: true
+                        color: Qt.rgba(1, 1, 1, 0.20)
                     }
 
                     Text {
                         anchors.centerIn: parent
                         text: wsBtn.modelData
-                        font.family: "JetBrainsMono Nerd Font"
-                        font.pixelSize: 11
+                        font.family: Services.Colors.uiFont
+                        font.pixelSize: 12
                         font.bold: true
                         color: wsBtn.active ? "#ffffff" : wsBtn.occupied ? Services.Colors.fg : Qt.rgba(0.298, 0.388, 0.522, 0.4)
+                        // Relieve: número en alto sobre esfera activa, grabado en el resto
+                        style: wsBtn.active ? Text.Raised : Text.Sunken
+                        styleColor: wsBtn.active ? Qt.darker(Services.Colors.accent, 1.5) : Qt.rgba(1, 1, 1, 0.85)
                     }
 
+                    HoverHandler { id: wsHover }
                     TapHandler {
+                        id: wsPress
                         // Using CachyOS's Lua-based hyprland dispatcher syntax as per existing codebase logic
                         onTapped: Hyprland.dispatch("hl.dsp.focus({workspace = " + wsBtn.modelData + "})")
                     }

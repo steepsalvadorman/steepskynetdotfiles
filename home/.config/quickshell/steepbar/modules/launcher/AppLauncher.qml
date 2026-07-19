@@ -166,7 +166,7 @@ PanelWindow {
                     TextInput {
                         id: searchInput
                         Layout.fillWidth: true
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Services.Colors.uiFont
                         font.pixelSize: 14
                         color: "#051630"
                         selectByMouse: true
@@ -360,7 +360,7 @@ PanelWindow {
                                         Layout.fillWidth: true
                                         Layout.alignment: Qt.AlignHCenter
                                         text: modelData.name
-                                        font.family: "JetBrainsMono Nerd Font"
+                                        font.family: Services.Colors.uiFont
                                         font.pixelSize: 11
                                         font.bold: true
                                         color: appItem.isCurrent ? Services.Colors.fg : Services.Colors.subtext
@@ -381,7 +381,7 @@ PanelWindow {
 
                 Text {
                     text: searchQuery.length > 0 ? "Resultados: " + launcher.filteredApps.length : "Busca entre tus aplicaciones"
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Services.Colors.uiFont
                     font.pixelSize: 10
                     color: Services.Colors.subtext
                 }
@@ -393,14 +393,17 @@ PanelWindow {
                     implicitWidth: 100
                     implicitHeight: 18
                     radius: 999
-                    color: Qt.rgba(0.08, 0.14, 0.28, 0.6)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#ffffff" }
+                        GradientStop { position: 1.0; color: "#eef3f9" }
+                    }
                     border.width: 1
                     border.color: Services.Colors.glassBorder
 
                     Text {
                         anchors.centerIn: parent
                         text: "ESC para cerrar"
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Services.Colors.uiFont
                         font.pixelSize: 9
                         font.bold: true
                         color: Services.Colors.subtext
@@ -411,14 +414,17 @@ PanelWindow {
                     implicitWidth: 100
                     implicitHeight: 18
                     radius: 999
-                    color: Qt.rgba(0.08, 0.14, 0.28, 0.6)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#ffffff" }
+                        GradientStop { position: 1.0; color: "#eef3f9" }
+                    }
                     border.width: 1
                     border.color: Services.Colors.glassBorder
 
                     Text {
                         anchors.centerIn: parent
                         text: "ENTER para abrir"
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Services.Colors.uiFont
                         font.pixelSize: 9
                         font.bold: true
                         color: Services.Colors.subtext

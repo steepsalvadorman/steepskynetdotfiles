@@ -5,6 +5,8 @@ import Quickshell.Wayland
 import Quickshell.Services.Pipewire
 import "../../services" as Services
 
+// Embedded dropdown: plain Rectangle anchored below the bar shell inside
+// Bar.qml's tall layer surface (NOT a standalone window).
 Rectangle {
     id: popup
     implicitWidth: 320
@@ -74,7 +76,7 @@ Rectangle {
                 }
                 Text {
                     text: "Dispositivos de Audio"
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Services.Colors.uiFont
                     font.pixelSize: 13
                     font.bold: true
                     color: Services.Colors.fg
@@ -88,7 +90,7 @@ Rectangle {
 
                 Text {
                     text: "SALIDA (ALTAVOCES / AURICULARES)"
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Services.Colors.uiFont
                     font.pixelSize: 9
                     font.bold: true
                     color: Services.Colors.subtext
@@ -154,7 +156,7 @@ Rectangle {
                                 Text {
                                     Layout.fillWidth: true
                                     text: modelData.description || modelData.name
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Services.Colors.uiFont
                                     font.pixelSize: 10
                                     font.bold: true
                                     color: Services.Colors.fg
@@ -192,7 +194,7 @@ Rectangle {
 
                             Text {
                                 text: modelData.audio ? Math.round(modelData.audio.volume * 100) + "%" : "0%"
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Services.Colors.uiFont
                                 font.pixelSize: 9
                                 font.bold: true
                                 color: Services.Colors.subtext
@@ -237,7 +239,7 @@ Rectangle {
 
                 Text {
                     text: "ENTRADA (MICRÓFONOS)"
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Services.Colors.uiFont
                     font.pixelSize: 9
                     font.bold: true
                     color: Services.Colors.subtext
@@ -303,7 +305,7 @@ Rectangle {
                                 Text {
                                     Layout.fillWidth: true
                                     text: modelData.description || modelData.name
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: Services.Colors.uiFont
                                     font.pixelSize: 10
                                     font.bold: true
                                     color: Services.Colors.fg
@@ -341,7 +343,7 @@ Rectangle {
 
                             Text {
                                 text: modelData.audio ? Math.round(modelData.audio.volume * 100) + "%" : "0%"
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Services.Colors.uiFont
                                 font.pixelSize: 9
                                 font.bold: true
                                 color: Services.Colors.subtext

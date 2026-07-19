@@ -40,7 +40,7 @@ Rectangle {
 
             Text {
                 text: " Proyectos"
-                font.family: "JetBrainsMono Nerd Font Mono"
+                font.family: Services.Colors.uiFont
                 font.pixelSize: 13
                 font.bold: true
                 color: Services.Colors.fg

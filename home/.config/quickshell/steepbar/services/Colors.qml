@@ -16,14 +16,19 @@ QtObject {
     property color subtext: "#4c6385"
 
     // Fixed semantic colors carried over from the old alerts/docker scripts.
-    readonly property color danger: "#1e3a8a"
-    readonly property color warning: "#2563eb"
-    readonly property color idle: "#504945"
-    readonly property color success: "#0ea5e9"
+    readonly property color danger: "#ff3b30"   // macOS Candy Red
+    readonly property color warning: "#ff9f0a"  // macOS Candy Orange
+    readonly property color idle: "#7e8e9f"     // Skeuomorphic Muted Slate
+    readonly property color success: "#28cd41"  // macOS Candy Green
 
     property color cardBg: "#f2f8fcff"
     property color glassBorder: "#b5cce8"
     property color innerBevel: "#f2ffffff"
+
+    // Tipografía de sistema: Adwaita Sans (derivada de Inter, instalada
+    // de fábrica). Los glifos de iconos Nerd llegan por fallback de
+    // fontconfig, así que no fijar familia en Texts de solo-icono.
+    readonly property string uiFont: "Adwaita Sans"
 
     property var palette: []
 

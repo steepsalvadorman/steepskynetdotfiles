@@ -13,8 +13,8 @@ PanelWindow {
     anchors { top: true; left: true; right: true }
     margins { top: 4; left: 13; right: 13 }
     
-    // Reserve space only for the bar shell (44px height + 4px margin)
-    exclusiveZone: 50
+    // Reserve space only for the bar shell (52px height + 4px margin)
+    exclusiveZone: 56
     
     // Tall window size to encompass dropdowns inside the same Layer Surface
     implicitHeight: 600
@@ -28,8 +28,8 @@ PanelWindow {
         Region {
             x: 0
             y: 0
-            width: (Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible) ? bar.width : 0
-            height: (Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible) ? bar.height : 0
+            width: (Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible || Services.PopupState.systemVisible) ? bar.width : 0
+            height: (Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible || Services.PopupState.systemVisible) ? bar.height : 0
         }
     }
 
@@ -39,23 +39,25 @@ PanelWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 46
-        radius: 22
+        // 52px: en 2560x1440 @ 31" (~95 ppp) ≈ 14 mm — presencia de
+        // taskbar moderna sin robar altura de código/juego.
+        height: 52
+        radius: 26
         
         // Skeuomorphic raised vertical gradient
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#ffffff" }
-            GradientStop { position: 1.0; color: "#f2f4f8" }
+            GradientStop { position: 1.0; color: "#e9eef6" }
         }
         
         border.width: 1
-        border.color: Services.Colors.glassBorder
+        border.color: Qt.rgba(0.71, 0.80, 0.91, 0.50)
 
         // Inner Bevel Highlight
         Rectangle {
             anchors.fill: parent
             anchors.margins: 1
-            radius: 21
+            radius: 25
             color: "transparent"
             border.width: 1
             border.color: Services.Colors.innerBevel
@@ -64,7 +66,7 @@ PanelWindow {
         // Glossy Reflection overlay
         Rectangle {
             anchors.fill: parent
-            radius: 21
+            radius: 25
             clip: true
             color: "transparent"
             Rectangle {
@@ -105,6 +107,7 @@ PanelWindow {
             }
 
             Right {
+                id: barRight
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -114,11 +117,12 @@ PanelWindow {
     // Dismissal overlay: captures clicks outside the dropdown to close it
     MouseArea {
         anchors.fill: parent
-        visible: Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible
+        visible: Services.PopupState.audioVisible || Services.PopupState.notifCenterVisible || Services.PopupState.projectsVisible || Services.PopupState.systemVisible
         onClicked: {
             Services.PopupState.audioVisible = false
             Services.PopupState.notifCenterVisible = false
             Services.PopupState.projectsVisible = false
+            Services.PopupState.systemVisible = false
         }
     }
 
@@ -126,26 +130,55 @@ PanelWindow {
     AudioPopup {
         id: audioDropdown
         anchors.top: shell.bottom
-        anchors.topMargin: 8
         anchors.right: shell.right
         anchors.rightMargin: 220
+
+        visible: Services.PopupState.audioVisible || opacity > 0
+        opacity: Services.PopupState.audioVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
+        anchors.topMargin: Services.PopupState.audioVisible ? 8 : -8
+        Behavior on anchors.topMargin { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
     }
 
     // ── Dropdown: Notifications Center ────────────────────
     NotifModule.NotificationCenter {
         id: notifDropdown
         anchors.top: shell.bottom
-        anchors.topMargin: 8
         anchors.right: shell.right
         anchors.rightMargin: 12
+
+        visible: Services.PopupState.notifCenterVisible || opacity > 0
+        opacity: Services.PopupState.notifCenterVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
+        anchors.topMargin: Services.PopupState.notifCenterVisible ? 8 : -8
+        Behavior on anchors.topMargin { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
     }
 
     // ── Dropdown: Developer Projects ──────────────────────
     ProjectsModule.ProjectsPopup {
         id: projectsDropdown
         anchors.top: shell.bottom
-        anchors.topMargin: 8
         anchors.right: shell.right
         anchors.rightMargin: 580
+
+        visible: Services.PopupState.projectsVisible || opacity > 0
+        opacity: Services.PopupState.projectsVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
+        anchors.topMargin: Services.PopupState.projectsVisible ? 8 : -8
+        Behavior on anchors.topMargin { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
+    }
+
+    // ── Dropdown: System Status and Gauges ────────────────
+    SystemPanel {
+        id: systemDropdown
+        anchors.top: shell.bottom
+        anchors.right: shell.right
+        anchors.rightMargin: Math.max(12, shell.width - (12 + barRight.x + barRight.sysPillX + barRight.sysPillWidth))
+
+        visible: Services.PopupState.systemVisible || opacity > 0
+        opacity: Services.PopupState.systemVisible ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
+        anchors.topMargin: Services.PopupState.systemVisible ? 8 : -8
+        Behavior on anchors.topMargin { NumberAnimation { duration: 180; easing.type: Easing.OutQuad } }
     }
 }

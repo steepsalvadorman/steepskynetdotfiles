@@ -55,7 +55,7 @@ Rectangle {
             Text {
                 Layout.fillWidth: true
                 text: notification ? (notification.summary || notification.appName || "Notificación") : ""
-                font.family: "JetBrainsMono Nerd Font Mono"
+                font.family: Services.Colors.uiFont
                 font.pixelSize: 13
                 font.bold: true
                 color: Services.Colors.fg
@@ -79,7 +79,7 @@ Rectangle {
             visible: notification && notification.body && notification.body.length > 0
             text: notification ? notification.body : ""
             textFormat: Text.RichText
-            font.family: "JetBrainsMono Nerd Font Mono"
+            font.family: Services.Colors.uiFont
             font.pixelSize: 12
             color: Services.Colors.subtext
             wrapMode: Text.WordWrap
