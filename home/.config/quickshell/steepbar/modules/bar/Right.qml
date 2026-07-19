@@ -139,49 +139,7 @@ RowLayout {
         }
     }
 
-    // ── Red ────────────────────────────────────────────────
-    Pill {
-        id: netPill
-        hPad: 12
-        vPad: 4
-        interactive: false
 
-        property string netType: "disconnected"
-        property string ssid: "Offline"
-        property string signalStrength: "0"
-
-        Process {
-            id: netProc
-            command: [root.scriptsDir + "/network_status"]
-            stdout: StdioCollector { id: netOut }
-            onExited: {
-                const parts = netOut.text.trim().split("|")
-                if (parts.length === 3) {
-                    netPill.netType = parts[0]
-                    netPill.ssid = parts[1]
-                    netPill.signalStrength = parts[2]
-                }
-            }
-        }
-        Timer { interval: 5000; running: true; repeat: true; triggeredOnStart: true; onTriggered: netProc.running = true }
-
-        IconOrb {
-            glyph: netPill.netType === "wifi" ? "󰖩" : netPill.netType === "ethernet" ? "󰈀" : "󰖪"
-            tint: netPill.netType === "disconnected" ? "#f5f8fc" : Services.Colors.success
-            colored: netPill.netType !== "disconnected"
-            glyphColor: netPill.netType === "disconnected" ? Services.Colors.danger : "#ffffff"
-        }
-
-        Text {
-            text: netPill.ssid
-            font.family: Services.Colors.uiFont
-            font.pixelSize: 12
-            font.weight: Font.Bold
-            color: Services.Colors.fg
-            style: Text.Sunken
-            styleColor: Qt.rgba(1, 1, 1, 0.85)
-        }
-    }
 
     // ── Reloj ──────────────────────────────────────────────
     Pill {

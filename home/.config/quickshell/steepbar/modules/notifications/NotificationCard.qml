@@ -10,11 +10,46 @@ Rectangle {
     property var notification
     property bool popup: false
     signal dismissRequested()
-
     radius: 14
     color: Services.Colors.cardBg
     border.width: 1
     border.color: Services.Colors.glassBorder
+
+    opacity: 0.0
+
+    transform: Translate {
+        id: trans
+        x: root.popup ? 100 : 0
+    }
+
+    Component.onCompleted: {
+        if (root.popup) {
+            inAnim.start()
+        } else {
+            root.opacity = 1.0
+        }
+    }
+
+    ParallelAnimation {
+        id: inAnim
+        NumberAnimation { target: trans; property: "x"; to: 0; duration: 250; easing.type: Easing.OutBack }
+        NumberAnimation { target: root; property: "opacity"; to: 1.0; duration: 180 }
+    }
+
+    ParallelAnimation {
+        id: outAnim
+        NumberAnimation { target: trans; property: "x"; to: 150; duration: 200; easing.type: Easing.InQuad }
+        NumberAnimation { target: root; property: "opacity"; to: 0.0; duration: 180 }
+        onFinished: root.dismissRequested()
+    }
+
+    function startDismissal() {
+        if (root.popup) {
+            outAnim.start()
+        } else {
+            root.dismissRequested()
+        }
+    }
 
     // Inner highlight bevel
     Rectangle {
@@ -68,7 +103,7 @@ Rectangle {
                 TapHandler {
                     onTapped: {
                         if (root.notification) root.notification.dismiss()
-                        root.dismissRequested()
+                        root.startDismissal()
                     }
                 }
             }
@@ -118,8 +153,8 @@ Rectangle {
     }
 
     Timer {
-        interval: (root.notification && root.notification.expireTimeout > 0) ? root.notification.expireTimeout * 1000 : 6000
+        interval: (root.notification && root.notification.expireTimeout > 0) ? root.notification.expireTimeout : 6000
         running: root.popup
-        onTriggered: root.dismissRequested()
+        onTriggered: root.startDismissal()
     }
 }

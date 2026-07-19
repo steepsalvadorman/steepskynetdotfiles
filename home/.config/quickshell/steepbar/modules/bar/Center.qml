@@ -13,6 +13,19 @@ RowLayout {
         return players.find(p => p.isPlaying) ?? players[0] ?? null
     }
 
+    // Timer to update the playback position reactively (every 500ms for smooth progress bar updates)
+    Timer {
+        id: positionTimer
+        interval: 500
+        repeat: true
+        running: root.player && root.player.isPlaying
+        onTriggered: {
+            if (root.player) {
+                root.player.positionChanged()
+            }
+        }
+    }
+
     // (El reloj vive en Right.qml junto a la campana — no duplicar aquí.)
 
     // Custom Glassmorphic Music Pill (40px tall and wider)
@@ -32,7 +45,7 @@ RowLayout {
             color: Qt.rgba(0.07, 0.13, 0.24, 0.13)
         }
 
-        // Cuerpo elevado, sin borde: solo luz
+        // Cuerpo elevado
         Rectangle {
             id: containerBody
             width: parent.width
@@ -43,13 +56,43 @@ RowLayout {
                 GradientStop { position: 0.0; color: "#ffffff" }
                 GradientStop { position: 1.0; color: Services.Colors.cardBg }
             }
+            border.width: 1
+            border.color: Services.Colors.glassBorder
+        }
+
+        // Inner Bevel Highlight
+        Rectangle {
+            anchors.fill: containerBody
+            anchors.margins: 1
+            radius: 22
+            color: "transparent"
+            border.width: 1
+            border.color: Services.Colors.innerBevel
+        }
+
+        // Glossy Reflection overlay (curved upper shine)
+        Rectangle {
+            anchors.fill: containerBody
+            radius: 22
+            clip: true
+            color: "transparent"
+            Rectangle {
+                width: parent.width * 1.5
+                height: parent.height / 1.8
+                rotation: -3
+                x: -10
+                y: -3
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.35) }
+                    GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.0) }
+                }
+            }
         }
 
         // Waving Aurora light wave (Frutiger Aero vector wave)
-        Rectangle {
+        ClippingRectangle {
             anchors.fill: containerBody
             radius: 23
-            clip: true
             color: "transparent"
             opacity: (root.player && root.player.isPlaying) ? 0.28 : 0.0
             Behavior on opacity { NumberAnimation { duration: 600 } }
@@ -222,7 +265,7 @@ RowLayout {
                 Layout.fillWidth: true
                 text: (root.player && root.player.trackTitle) ? root.player.trackTitle : "Sin reproducción"
                 font.family: Services.Colors.uiFont
-                font.pixelSize: 13
+                font.pixelSize: 12
                 font.weight: Font.DemiBold
                 color: Services.Colors.fg
                 elide: Text.ElideRight
@@ -233,10 +276,73 @@ RowLayout {
                 Layout.fillWidth: true
                 text: (root.player && root.player.trackArtist) ? root.player.trackArtist : "Desconocido"
                 font.family: Services.Colors.uiFont
-                font.pixelSize: 11
+                font.pixelSize: 10
                 font.weight: Font.Medium
                 color: Services.Colors.subtext
                 elide: Text.ElideRight
+            }
+
+            // Sleek progress bar / Seek slider (Aero Style)
+            Item {
+                Layout.fillWidth: true
+                height: 8
+                Layout.topMargin: 2
+                visible: root.player && root.player.length > 0
+
+                // Track progress line background
+                Rectangle {
+                    id: progressBg
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width
+                    height: 3
+                    radius: 1.5
+                    color: Qt.rgba(0, 0, 0, 0.08)
+
+                    // Progressive progress line
+                    Rectangle {
+                        height: parent.height
+                        radius: parent.radius
+                        width: parent.width * (root.player && root.player.length > 0 ? Math.max(0, Math.min(1, root.player.position / root.player.length)) : 0)
+                        color: Services.Colors.accent2
+                    }
+                }
+
+                // Interactive thumb that appears on hover
+                Rectangle {
+                    id: seekThumb
+                    width: 8
+                    height: 8
+                    radius: 4
+                    color: Services.Colors.accent
+                    border.width: 1
+                    border.color: "#ffffff"
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: (parent.width - width) * (root.player && root.player.length > 0 ? Math.max(0, Math.min(1, root.player.position / root.player.length)) : 0)
+                    opacity: seekHover.hovered || seekArea.pressed ? 1.0 : 0.0
+                    Behavior on opacity { NumberAnimation { duration: 150 } }
+                }
+
+                // Mouse handler for seeking (tap/drag)
+                MouseArea {
+                    id: seekArea
+                    anchors.fill: parent
+                    preventStealing: true
+
+                    HoverHandler { id: seekHover }
+
+                    function handleSeek(mouse) {
+                        if (root.player && root.player.canSeek && root.player.length > 0) {
+                            let pct = Math.max(0, Math.min(1, mouse.x / width))
+                            root.player.position = pct * root.player.length
+                            root.player.positionChanged()
+                        }
+                    }
+
+                    onPressed: mouse => handleSeek(mouse)
+                    onPositionChanged: mouse => {
+                        if (pressed) handleSeek(mouse)
+                    }
+                }
             }
         }
 

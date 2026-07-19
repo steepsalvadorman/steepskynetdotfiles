@@ -12,7 +12,7 @@ PanelWindow {
     color: "transparent"
     implicitWidth: 640
     implicitHeight: 520
-    visible: Services.PopupState.launcherVisible
+    visible: Services.PopupState.launcherVisible || closingTimer.running
 
     focusable: true
 
@@ -22,12 +22,37 @@ PanelWindow {
     property int currentIndex: 0
     property int columns: 4
 
+    property string activeCategory: "all"
+    property var categoriesList: [
+        { label: "Todo", id: "all", icon: "󰀻" },
+        { label: "Internet", id: "network", icon: "󰖩" },
+        { label: "Desarrollo", id: "development", icon: "󰘦" },
+        { label: "Juegos", id: "game", icon: "󰊗" },
+        { label: "Sistema", id: "system", icon: "󰓅" }
+    ]
+
+    Timer {
+        id: closingTimer
+        interval: 200
+        running: false
+    }
+
+    Connections {
+        target: Services.PopupState
+        function onLauncherVisibleChanged() {
+            if (!Services.PopupState.launcherVisible) {
+                closingTimer.restart();
+            }
+        }
+    }
+
     // Run the app indexer when the launcher becomes visible
     onVisibleChanged: {
         if (visible) {
             appsProc.running = true;
             searchInput.text = "";
             searchQuery = "";
+            activeCategory = "all";
             currentIndex = 0;
             searchInput.forceActiveFocus();
         }
@@ -48,16 +73,17 @@ PanelWindow {
     }
 
     function filterApps() {
-        if (searchQuery === "") {
-            filteredApps = allApps;
-        } else {
-            var query = searchQuery.toLowerCase();
-            filteredApps = allApps.filter(function(app) {
-                return app.name.toLowerCase().includes(query) || 
-                       (app.comment && app.comment.toLowerCase().includes(query)) ||
-                       app.exec.toLowerCase().includes(query);
-            });
-        }
+        var query = searchQuery.toLowerCase();
+        filteredApps = allApps.filter(function(app) {
+            // Category filter check
+            var matchesCategory = activeCategory === "all" || (app.categories && app.categories.includes(activeCategory));
+            if (!matchesCategory) return false;
+
+            if (query === "") return true;
+            return app.name.toLowerCase().includes(query) || 
+                   (app.comment && app.comment.toLowerCase().includes(query)) ||
+                   app.exec.toLowerCase().includes(query);
+        });
         // Clamp current index
         if (currentIndex >= filteredApps.length) {
             currentIndex = Math.max(0, filteredApps.length - 1);
@@ -93,6 +119,13 @@ PanelWindow {
         }
         border.width: 1
         border.color: Services.Colors.glassBorder
+
+        scale: Services.PopupState.launcherVisible ? 1.0 : 0.95
+        opacity: Services.PopupState.launcherVisible ? 1.0 : 0.0
+        transform: Scale { origin.x: width / 2; origin.y: height / 2 }
+
+        Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.OutBack } }
+        Behavior on opacity { NumberAnimation { duration: 180 } }
 
         // Skeuomorphic glossy reflection overlay
         Rectangle {
@@ -212,6 +245,99 @@ PanelWindow {
                 }
             }
 
+            // Category Filter Tabs Bar (Aero Glass Style)
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 8
+                Layout.topMargin: 4
+                Layout.bottomMargin: 4
+
+                Repeater {
+                    model: launcher.categoriesList
+                    delegate: Item {
+                        id: catDelegate
+                        implicitWidth: catRow.implicitWidth + 24
+                        implicitHeight: 28
+
+                        readonly property bool isActive: launcher.activeCategory === modelData.id
+                        property bool hovered: false
+
+                        HoverHandler { onHoveredChanged: catDelegate.hovered = hovered }
+                        TapHandler {
+                            onTapped: {
+                                launcher.activeCategory = modelData.id;
+                                launcher.currentIndex = 0;
+                                launcher.filterApps();
+                            }
+                        }
+
+                        // Tab glass background
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: 14
+                            gradient: Gradient {
+                                GradientStop { position: 0.0; color: catDelegate.isActive ? "#ffffff" : catDelegate.hovered ? Qt.rgba(1,1,1,0.5) : "transparent" }
+                                GradientStop { position: 1.0; color: catDelegate.isActive ? Services.Colors.cardBg : catDelegate.hovered ? Qt.rgba(255,255,255,0.15) : "transparent" }
+                            }
+                            border.width: (catDelegate.isActive || catDelegate.hovered) ? 1 : 0
+                            border.color: catDelegate.isActive ? Services.Colors.accent2 : Qt.rgba(255,255,255,0.4)
+                            Behavior on border.width { NumberAnimation { duration: 100 } }
+
+                            // Glossy Reflection overlay (curved upper shine)
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: 14
+                                clip: true
+                                color: "transparent"
+                                visible: catDelegate.isActive || catDelegate.hovered
+                                Rectangle {
+                                    width: parent.width * 1.5
+                                    height: parent.height / 1.8
+                                    rotation: -3
+                                    x: -5
+                                    y: -2
+                                    gradient: Gradient {
+                                        GradientStop { position: 0.0; color: Qt.rgba(1, 1, 1, 0.40) }
+                                        GradientStop { position: 1.0; color: Qt.rgba(1, 1, 1, 0.0) }
+                                    }
+                                }
+                            }
+
+                            // LED glow line under active tab
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: catDelegate.isActive ? 24 : 0
+                                height: 2
+                                radius: 1
+                                color: Services.Colors.accent2
+                                Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+                            }
+                        }
+
+                        RowLayout {
+                            id: catRow
+                            anchors.centerIn: parent
+                            spacing: 6
+
+                            Text {
+                                text: modelData.icon
+                                font.pixelSize: 13
+                                color: catDelegate.isActive ? Services.Colors.accent : Services.Colors.fg
+                            }
+
+                            Text {
+                                text: modelData.label
+                                font.family: Services.Colors.uiFont
+                                font.pixelSize: 11
+                                font.weight: catDelegate.isActive ? Font.Bold : Font.Medium
+                                color: catDelegate.isActive ? Services.Colors.fg : Services.Colors.subtext
+                            }
+                        }
+                    }
+                }
+            }
+
             // Body: Apps Grid View with Scroll
             Flickable {
                 id: gridFlickable
@@ -277,6 +403,8 @@ PanelWindow {
                                 anchors.bottomMargin: (appItem.isCurrent || appItem.hovered) ? 1 : 3
                                 anchors.topMargin: (appItem.isCurrent || appItem.hovered) ? 2 : 0
                                 radius: 16
+                                scale: (appItem.isCurrent || appItem.hovered) ? 1.03 : 1.0
+                                Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
                                 // Raised linear gradient
                                 gradient: Gradient {
                                     GradientStop { 
@@ -344,6 +472,19 @@ PanelWindow {
                                     Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
                                 }
 
+                                // Soft backlight glow bubble behind the app icon
+                                Rectangle {
+                                    anchors.centerIn: appIcon
+                                    width: 48
+                                    height: 48
+                                    radius: 24
+                                    color: Services.Colors.accent2
+                                    opacity: (appItem.isCurrent || appItem.hovered) ? 0.15 : 0.0
+                                    scale: (appItem.isCurrent || appItem.hovered) ? 1.0 : 0.7
+                                    Behavior on opacity { NumberAnimation { duration: 150 } }
+                                    Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutBack } }
+                                }
+
                                 ColumnLayout {
                                     anchors.fill: parent
                                     anchors.margins: 8
@@ -351,6 +492,7 @@ PanelWindow {
 
                                     // Application Icon
                                     Image {
+                                        id: appIcon
                                         Layout.alignment: Qt.AlignHCenter
                                         Layout.preferredWidth: 36
                                         Layout.preferredHeight: 36

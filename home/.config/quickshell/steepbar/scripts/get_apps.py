@@ -69,6 +69,13 @@ def parse_desktop_file(filepath):
             app['comment'] = comment_match.group(1).strip()
         else:
             app['comment'] = ''
+
+        # Get Categories
+        categories_match = re.search(r'^Categories\s*=\s*(.*)', entry, re.MULTILINE)
+        if categories_match:
+            app['categories'] = [cat.strip().lower() for cat in categories_match.group(1).split(';') if cat.strip()]
+        else:
+            app['categories'] = []
             
         return app
     except Exception:

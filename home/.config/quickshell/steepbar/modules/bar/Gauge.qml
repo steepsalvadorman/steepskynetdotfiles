@@ -25,6 +25,17 @@ Item {
     implicitWidth: size
     implicitHeight: size
 
+    // Volumetric glow under the gauge (Aero style)
+    Rectangle {
+        anchors.centerIn: parent
+        width: size - root._stroke * 2
+        height: size - root._stroke * 2
+        radius: width / 2
+        color: root.ringColor
+        opacity: 0.06
+        z: -1
+    }
+
     Shape {
         anchors.fill: parent
         preferredRendererType: Shape.CurveRenderer

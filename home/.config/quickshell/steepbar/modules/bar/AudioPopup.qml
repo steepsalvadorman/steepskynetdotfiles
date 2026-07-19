@@ -122,6 +122,22 @@ Rectangle {
                                 GradientStop { position: 1.0; color: sinkDelegate.isActive ? "#d2e5fa" : "#f6f9fc" }
                             }
 
+                            // Glossy Gel overlay reflection
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: 9
+                                clip: true
+                                color: "transparent"
+                                Rectangle {
+                                    width: parent.width * 1.5
+                                    height: parent.height / 2
+                                    rotation: -3
+                                    x: -10
+                                    y: -2
+                                    gradient: Services.Colors.gelGloss
+                                }
+                            }
+
                             HoverHandler {
                                 onHoveredChanged: sinkDelegate.hovered = hovered
                             }
@@ -269,6 +285,22 @@ Rectangle {
                             gradient: Gradient {
                                 GradientStop { position: 0.0; color: sourceDelegate.isActive ? "#e5effa" : "#ffffff" }
                                 GradientStop { position: 1.0; color: sourceDelegate.isActive ? "#d2e5fa" : "#f6f9fc" }
+                            }
+
+                            // Glossy Gel overlay reflection
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: 9
+                                clip: true
+                                color: "transparent"
+                                Rectangle {
+                                    width: parent.width * 1.5
+                                    height: parent.height / 2
+                                    rotation: -3
+                                    x: -10
+                                    y: -2
+                                    gradient: Services.Colors.gelGloss
+                                }
                             }
 
                             HoverHandler {
